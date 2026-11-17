@@ -5,7 +5,8 @@ Backend: Node API (`server/`) that holds the model key and the databases. Intend
 
 ## Status
 - Frontend: deployed. Recorded evaluation results are bundled as `llm-results.json`.
-- **Backend: not deployed.** Deploying needs a Render account action this environment does not have. Until it exists, the Live agent and Run evaluation tabs say "needs a backend" instead of showing anything fake.
+- **Backend: deployed** at https://voice-agent-quality-lab-api.onrender.com (Render free plan, built from `main`, auto-deploys on commit). `scripts/verify-deploy.mjs --chat` passes everything except the admin-token check, because `ADMIN_TOKEN` has not been set in Render yet.
+- Frontend: built with `VITE_API_URL` pointing at it (`scripts/publish-pages.sh`).
 
 ## Steps to deploy the backend (about 5 minutes)
 The scripts below were tested locally against a production-mode server; they have not yet been run against Render.

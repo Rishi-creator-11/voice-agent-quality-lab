@@ -13,7 +13,8 @@ An evaluation platform for LLM appointment-booking agents. Two real LLM agents (
 | Real evaluation: 36 scenarios × 2 agents × 3 trials = 216 conversations, plus a separate LLM judge | Run; traces in [`public/llm-results.json`](public/llm-results.json) |
 | Dashboard: results, scenario explorer with transcripts and database changes, live agent, runner, method (hash-routed, responsive, light/dark) | Working; results pages deployed on GitHub Pages. 0 axe-core violations on all routes in both themes |
 | Walkthrough video (49 s, recorded with Playwright against the local stack: results, emergency scenario, live booking then reschedule) | [docs/walkthrough.webm](docs/walkthrough.webm). Shows the local backend, not the public site |
-| Live chat + eval runner through the API | Verified locally end to end (book, then reschedule, with DB changes). **Backend not deployed yet**: needs a Render account action, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) |
+| Live chat through the API | **Deployed** on Render (free plan): https://voice-agent-quality-lab-api.onrender.com. Verified from the public GitHub Pages site on 2026-11-16: booking, then reschedule, with tool calls and DB state. Free instances sleep, so the first request can take about a minute |
+| Evaluation runner and kill switch (`/api/admin/*`) | Code tested; **admin token not yet set on Render**, so the runner is unusable on the public deployment until it is |
 | Browser voice (mic → speech recognition → LLM → speech synthesis) | Implemented, **not verified with a real microphone**. See [docs/VOICE.md](docs/VOICE.md) |
 | Regal integration | **None** (no Regal workspace access; independent project) |
 | Historical rule-based simulator (v1) | Preserved under "Historical simulator"; not LLM results |

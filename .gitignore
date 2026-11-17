@@ -5,3 +5,5 @@ dist
 !.env.example
 *.log
 data/
+# macOS/iCloud sync-conflict duplicates
+* 2.*
