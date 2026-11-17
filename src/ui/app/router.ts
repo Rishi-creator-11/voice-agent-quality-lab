@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export type Section = 'home' | 'overview' | 'scenarios' | 'live' | 'how' | 'method' | 'run' | 'history';
+export type Section = 'home' | 'overview' | 'scenarios' | 'how' | 'method' | 'history';
 export interface Route { section: Section; param?: string }
-const SECTIONS: Section[] = ['home', 'overview', 'scenarios', 'live', 'how', 'method', 'run', 'history'];
+const SECTIONS: Section[] = ['home', 'overview', 'scenarios', 'how', 'method', 'history'];
 
 /** Hash routes keep deep links, back/forward and reload working on static hosting. An empty hash is the home page. */
 export function parseHash(hash: string): Route {

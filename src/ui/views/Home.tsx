@@ -7,7 +7,7 @@ import { scenarioRows, type ScenarioRow } from '../app/selectors';
 import { count, usd } from '../components/format';
 import { Badge, Icon, IconBox, Skeleton, TrialStrip } from '../components/ui';
 
-const TRUST = ['Real LLM-powered agent', 'Live tool calling', 'Scenario-based evaluations', 'Public interactive demo'];
+const TRUST = ['Real LLM-powered agents', 'Real tool calls on a database', 'Scenario-based evaluations', 'Replayable transcripts'];
 const PROBLEMS = [
   { icon: 'alert', title: 'Failures are hard to catch', body: 'A voice agent can sound confident while booking the wrong slot or skipping a handoff. You only find out when a customer does.' },
   { icon: 'bug', title: 'Debugging is fragmented', body: 'The transcript is in one tool, the API calls in another, the database in a third. Working out what actually happened takes too long.' },
@@ -17,7 +17,7 @@ const FEATURES = [
   { icon: 'run', title: 'Run evaluations', body: 'Replay scripted callers against two agent versions, several times each, from a clean database.', to: 'overview', cta: 'See results' },
   { icon: 'inspect', title: 'Inspect conversations', body: 'Open any scenario to read the transcript, every tool call, the final database state and each check.', to: 'scenarios', cta: 'Browse scenarios' },
   { icon: 'compare', title: 'Compare versions', body: 'See where Agent B is better, where it is not, and what the improvement cost in tokens and latency.', to: 'overview', cta: 'Compare agents' },
-  { icon: 'live', title: 'Try it live', body: 'Chat with a real model. Watch tool calls run against a sandbox clinic database as you talk.', to: 'live', cta: 'Open the playground' },
+  { icon: 'eye', title: 'Understand the method', body: 'See how pass and fail is decided, what each agent was told, and what these results cannot tell you.', to: 'method', cta: 'Read the method' },
 ] as const;
 
 /** The scenario that best shows the product: prefer one where B is consistently better. */
@@ -46,8 +46,8 @@ export default function Home() {
               <p className="lead">Run real conversations, inspect tool calls, replay failures, and compare agent versions in one place.</p>
             </div>
             <div className="cta-row">
-              <a className="btn" href={href({ section: 'live' })}>Try Live Agent <svg viewBox="0 0 24 24" width="18" height="18" style={{ fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }} aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" /></svg></a>
-              <a className="btn secondary" href={href({ section: 'overview' })}>View Evaluation Results</a>
+              <a className="btn" href={href({ section: 'overview' })}>View Evaluation Results <svg viewBox="0 0 24 24" width="18" height="18" style={{ fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }} aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" /></svg></a>
+              <a className="btn secondary" href={href({ section: 'scenarios' })}>Browse Scenarios</a>
               <a className="textlink" href={href({ section: 'how' })}>See How It Works</a>
             </div>
             <ul className="trust" aria-label="What this is">
@@ -104,10 +104,10 @@ export default function Home() {
         <div className="wrap">
           <div className="cta-band">
             <div className="stack-sm" style={{ maxWidth: '52ch' }}>
-              <h2>Start with the live agent</h2>
-              <p className="ink2">Ask it to book a cleaning, then move the appointment. Every tool call and database change is visible as it happens.</p>
+              <h2>Start with the evidence</h2>
+              <p className="ink2">Open the emergency scenario to see the same caller handled by both agents, with every tool call and database change recorded.</p>
             </div>
-            <div className="cta-row"><a className="btn" href={href({ section: 'live' })}>Try Live Agent</a><a className="textlink" href={href({ section: 'how' })}>What this demonstrates</a></div>
+            <div className="cta-row"><a className="btn" href={href({ section: 'scenarios', param: 'emergency' })}>Open the emergency scenario</a><a className="textlink" href={href({ section: 'how' })}>What this demonstrates</a></div>
           </div>
         </div>
       </section>

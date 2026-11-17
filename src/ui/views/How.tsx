@@ -2,7 +2,7 @@ import { href } from '../app/router';
 import { IconBox } from '../components/ui';
 
 const STEPS = [
-  { title: 'Customer speaks or types', body: 'A caller makes a request in plain language, by text or by voice in the browser.' },
+  { title: 'Customer speaks or types', body: 'A caller makes a request in plain language. The evaluation replays scripted callers as text.' },
   { title: 'Agent interprets the request', body: 'A real language model decides what the caller wants and which tool to use, if any.' },
   { title: 'Backend tools execute actions', body: 'Server code validates the call, checks authorization and changes a sandbox database. The model proposes; the backend decides.' },
   { title: 'Results are evaluated and inspected', body: 'Deterministic checks read the final database state and tool trace. Every conversation can be replayed and compared.' },
@@ -34,7 +34,7 @@ export default function How() {
             <li key={s.title} className="step"><span className="step-n" aria-hidden="true">{i + 1}</span><h3>{s.title}</h3><p>{s.body}</p></li>
           ))}
         </ol>
-        <p><a className="textlink" href={href({ section: 'live' })}>Watch the steps happen in the live playground</a></p>
+        <p><a className="textlink" href={href({ section: 'scenarios', param: 'book-happy' })}>See all four steps in a recorded booking</a></p>
       </section>
 
       <section aria-labelledby="rec" className="stack">

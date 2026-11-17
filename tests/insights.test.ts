@@ -40,5 +40,5 @@ describe('executive overview data', () => {
 
 describe('routes', () => {
   it('empty hash is home; unknown falls back to home', () => { expect(parseHash('')).toEqual({ section: 'home' }); expect(parseHash('#/nope')).toEqual({ section: 'home' }); expect(href({ section: 'home' })).toBe('#/'); });
-  it('knows every page', () => { for (const sct of ['overview', 'scenarios', 'live', 'how', 'method', 'run', 'history']) expect(parseHash(`#/${sct}`).section).toBe(sct); });
+  it('knows every page', () => { for (const sct of ['overview', 'scenarios', 'how', 'method', 'history']) expect(parseHash(`#/${sct}`).section).toBe(sct); });
 });

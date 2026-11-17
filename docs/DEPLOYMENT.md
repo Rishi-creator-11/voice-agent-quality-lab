@@ -4,6 +4,8 @@ Frontend: static site on GitHub Pages (built from `dist/`, `gh-pages` branch). I
 Backend: Node API (`server/`) that holds the model key and the databases. Intended host: Render (`render.yaml`).
 
 ## Status
+> The public site no longer links to the backend (live chat and the runner were removed from the UI). The Render service can be suspended or its `PUBLIC_CHAT_ENABLED` set to `false`; the notes below describe how it was deployed.
+
 - Frontend: deployed. Recorded evaluation results are bundled as `llm-results.json`.
 - **Backend: deployed** at https://voice-agent-quality-lab-api.onrender.com (Render free plan, built from `main`, auto-deploys on commit). `scripts/verify-deploy.mjs --chat` passes everything except the admin-token check, because `ADMIN_TOKEN` has not been set in Render yet.
 - Frontend: built with `VITE_API_URL` pointing at it (`scripts/publish-pages.sh`).

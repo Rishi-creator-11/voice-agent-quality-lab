@@ -1,7 +1,7 @@
 // Browser test (Playwright CLI). Serve a build on :4173, run from the repo root:  playwright-cli run-code --filename=e2e/a11y.js
 // Runs axe-core (WCAG 2.0/2.1 A+AA and best practices) on every route in light and dark mode. Expected output: every line ends with OK.
 async page => {
-  const routes = ['', 'overview', 'scenarios', 'scenarios/emergency', 'scenarios/cancel-happy', 'how', 'method', 'history', 'live', 'run'];
+  const routes = ['', 'overview', 'scenarios', 'scenarios/emergency', 'scenarios/cancel-happy', 'how', 'method', 'history'];
   const out = [];
   for (const scheme of ['light', 'dark']) {
     await page.emulateMedia({ colorScheme: scheme });

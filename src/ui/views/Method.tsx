@@ -54,7 +54,7 @@ export default function Method() {
             <li><strong>Detectors:</strong> reply checks and unsupported-claim detectors use regular expressions and can miss novel phrasing.</li>
             <li><strong>Sampling:</strong> the model rejects a temperature setting, so default sampling applies.</li>
             <li><strong>Latency:</strong> wall-clock from the machine that ran the evaluation, including network. Not telephony latency.</li>
-            <li><strong>Voice</strong> is built but has not been verified with a real microphone.</li>
+            <li><strong>Text only:</strong> there is no voice or telephone testing here, so nothing on this site speaks to speech recognition, voice quality or phone latency.</li>
           </ul>
         </Panel.Body>
       </Panel>

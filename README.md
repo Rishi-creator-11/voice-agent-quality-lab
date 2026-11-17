@@ -11,11 +11,8 @@ An evaluation platform for LLM appointment-booking agents. Two real LLM agents (
 | Two LLM agents (`claude-haiku-5-5`), real tool use | Working, run against the live API |
 | 7 backend tools on SQLite (validation, authorization, transactions, idempotency) | Working, 10 unit tests |
 | Real evaluation: 36 scenarios × 2 agents × 3 trials = 216 conversations, plus a separate LLM judge | Run; traces in [`public/llm-results.json`](public/llm-results.json) |
-| Dashboard: results, scenario explorer with transcripts and database changes, live agent, runner, method (hash-routed, responsive, light/dark) | Working; results pages deployed on GitHub Pages. 0 axe-core violations on all routes in both themes |
-| Walkthrough video (49 s, recorded with Playwright against the local stack: results, emergency scenario, live booking then reschedule) | [docs/walkthrough.webm](docs/walkthrough.webm). Shows the local backend, not the public site |
-| Live chat through the API | **Deployed** on Render (free plan): https://voice-agent-quality-lab-api.onrender.com. Verified from the public GitHub Pages site on 2026-11-16: booking, then reschedule, with tool calls and DB state. Free instances sleep, so the first request can take about a minute |
-| Evaluation runner and kill switch (`/api/admin/*`) | Code tested; **admin token not yet set on Render**, so the runner is unusable on the public deployment until it is |
-| Browser voice (mic → speech recognition → LLM → speech synthesis) | Implemented, **not verified with a real microphone**. See [docs/VOICE.md](docs/VOICE.md) |
+| Results site: landing page, executive overview, scenario explorer (transcript, tool calls, final state, checks), how it works, method (hash-routed, responsive, light/dark) | Working; deployed on GitHub Pages. 0 axe-core violations on all routes in both themes. Screenshots in `docs/screenshots/` |
+| Live chat, evaluation runner and browser voice | **Removed from the public site** (they added little for a reviewer and the voice sounded poor). The backend API, runner and voice code remain in the repository history and `server/`; the evaluation CLI (`npm run eval:llm`) is how results are produced. The Render service is no longer linked from the site |
 | Regal integration | **None** (no Regal workspace access; independent project) |
 | Historical rule-based simulator (v1) | Preserved under "Historical simulator"; not LLM results |
 
@@ -88,7 +85,7 @@ src/core, src/eval   v1 rule-based simulator (historical)
 - **Regex detectors and reply checks** can miss novel phrasing; claim counts are lower bounds.
 - **Sampling:** this model rejects a `temperature` setting, so default sampling applies.
 - **Latency** is wall-clock from the machine that ran the evaluation, including network and tool calls. Not telephony latency.
-- **Voice** is untested end to end; see docs/VOICE.md. No phone numbers or telephony.
+- **Text only.** No voice, telephone or speech-recognition testing; see docs/VOICE.md for the design notes.
 - **Server limits are per process** (in-memory). Free-tier hosting sleeps when idle and loses server-side run history on restart; the bundled results file is the durable copy.
 - **Not production-ready:** demo scope, synthetic data, no user accounts, no real calendar or messaging.
 

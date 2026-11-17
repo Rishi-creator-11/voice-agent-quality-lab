@@ -1,3 +1,5 @@
+> **Status (2026-11-16): the voice interface was removed from the public site.** It was never verified with a microphone and the browser voices sounded robotic, so it did not support the project's evidence. The notes below describe what was built and why, and remain useful if voice is revisited.
+
 # Voice: design and trade-offs
 
 ## What is built

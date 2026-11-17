@@ -7,26 +7,22 @@ import { RunProvider } from './RunContext';
 import { Skeleton } from '../components/ui';
 
 // Heavier or rarely used views load on demand.
-const Playground = lazy(() => import('../views/Playground'));
 const How = lazy(() => import('../views/How'));
 const Method = lazy(() => import('../views/Method'));
-const Runner = lazy(() => import('../views/Runner'));
 const History = lazy(() => import('../views/History'));
 
 const PAGES: Record<Section, { title: string; lead: string }> = {
   home: { title: 'Voice Agent Quality Lab', lead: '' },
   overview: { title: 'Evaluation overview', lead: '' },
   scenarios: { title: 'Scenarios', lead: 'Browse every scenario, compare the two agents, and open the transcript, tool calls and final database state behind each result.' },
-  live: { title: 'Live Agent Playground', lead: 'Talk to the agent and inspect tool execution in real time.' },
   how: { title: 'How it works', lead: 'From a caller’s words to an evaluated, inspectable result.' },
   method: { title: 'Agents and method', lead: 'What differs between Agent A and Agent B, how pass and fail are decided, and what this cannot tell you.' },
-  run: { title: 'Run evaluation', lead: 'Operator tool: run scenarios on the server and load the recorded results.' },
   history: { title: 'Historical simulator', lead: 'The first version used rule-based programs, not an LLM. Kept for reference only.' },
 };
 const MAIN_NAV: { section: Section; label: string }[] = [
-  { section: 'overview', label: 'Overview' }, { section: 'scenarios', label: 'Scenarios' }, { section: 'live', label: 'Live agent' }, { section: 'how', label: 'How it works' },
+  { section: 'overview', label: 'Overview' }, { section: 'scenarios', label: 'Scenarios' }, { section: 'how', label: 'How it works' },
 ];
-const MORE_NAV: { section: Section; label: string }[] = [{ section: 'method', label: 'Method' }, { section: 'run', label: 'Run' }, { section: 'history', label: 'Simulator v1' }];
+const MORE_NAV: { section: Section; label: string }[] = [{ section: 'method', label: 'Method' }, { section: 'history', label: 'Simulator v1' }];
 
 export function App() { return <RunProvider><Shell /></RunProvider>; }
 
@@ -58,7 +54,7 @@ function Shell() {
           <nav className="nav" aria-label="Primary">
             {MAIN_NAV.map(link)}<span className="sep" aria-hidden="true" />{MORE_NAV.map(link)}
           </nav>
-          <a className="btn header-cta hide-sm" href={href({ section: 'live' })}>Try live agent</a>
+          <a className="btn header-cta hide-sm" href={href({ section: 'overview' })}>View results</a>
         </div>
       </header>
       <main id="content">
@@ -70,10 +66,8 @@ function Shell() {
             <Suspense fallback={<Skeleton height={240} />}>
               {route.section === 'overview' && <Overview />}
               {route.section === 'scenarios' && <Scenarios id={route.param} />}
-              {route.section === 'live' && <Playground />}
               {route.section === 'how' && <How />}
               {route.section === 'method' && <Method />}
-              {route.section === 'run' && <Runner />}
               {route.section === 'history' && <History />}
             </Suspense>
           </div>
