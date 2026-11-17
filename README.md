@@ -11,7 +11,8 @@ An evaluation platform for LLM appointment-booking agents. Two real LLM agents (
 | Two LLM agents (`claude-haiku-5-5`), real tool use | Working, run against the live API |
 | 7 backend tools on SQLite (validation, authorization, transactions, idempotency) | Working, 10 unit tests |
 | Real evaluation: 36 scenarios × 2 agents × 3 trials = 216 conversations, plus a separate LLM judge | Run; traces in [`public/llm-results.json`](public/llm-results.json) |
-| Dashboard (overview, A vs B, scenario explorer with transcripts, live agent, runner) | Working; results tabs deployed on GitHub Pages |
+| Dashboard: results, scenario explorer with transcripts and database changes, live agent, runner, method (hash-routed, responsive, light/dark) | Working; results pages deployed on GitHub Pages. 0 axe-core violations on all routes in both themes |
+| Walkthrough video (49 s, recorded with Playwright against the local stack: results, emergency scenario, live booking then reschedule) | [docs/walkthrough.webm](docs/walkthrough.webm). Shows the local backend, not the public site |
 | Live chat + eval runner through the API | Verified locally end to end (book, then reschedule, with DB changes). **Backend not deployed yet**: needs a Render account action, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) |
 | Browser voice (mic → speech recognition → LLM → speech synthesis) | Implemented, **not verified with a real microphone**. See [docs/VOICE.md](docs/VOICE.md) |
 | Regal integration | **None** (no Regal workspace access; independent project) |
@@ -60,7 +61,10 @@ server/llm.ts        Anthropic client: timeout, retry/backoff, no key logging
 server/app.ts        API: rate limits, session/daily budgets, kill switch, admin auth, logging
 server/eval/         scenarios (DB-based checks), runner (trials, budget guard), judge, store, CLI
 src/llm/             run types + metrics shared by server and dashboard (same code computes both)
-src/ui/              dashboard, live agent, voice hook, runner
+src/ui/app            shell, hash router, run context, selectors (data-derived findings)
+src/ui/views          Overview, Scenarios (+ detail), Live agent, Runner, Method, History (v1, lazy-loaded)
+src/ui/components     Panel/Badge/TrialStrip/Transcript, formatting
+e2e/                 Playwright CLI scripts: accessibility audit, live booking→reschedule flow
 src/core, src/eval   v1 rule-based simulator (historical)
 ```
 
@@ -97,6 +101,8 @@ VITE_API_URL=http://localhost:8787 npm run dev   # dashboard on :5173 (live agen
 npm run eval:llm -- --trials 3 --judge --budget 2   # real evaluation; writes data/runs/ and public/llm-results.json
 npm run eval                    # v1 rule-based simulator
 npm run build                   # static site in dist/
+# browser tests (Playwright CLI), with a build served on :4173:
+playwright-cli run-code --filename=e2e/a11y.js        # axe-core on every route, light + dark
 ```
 Publishing the frontend: build, then push `dist/` to the `gh-pages` branch. Backend deployment: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 

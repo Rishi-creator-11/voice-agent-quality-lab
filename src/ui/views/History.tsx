@@ -1,16 +1,18 @@
 import { Fragment, useState } from 'react';
-import { Agent } from '../core/agent';
-import { CHANGE_NOTES, CONFIGS } from '../core/configs';
-import { Sandbox } from '../core/tools';
-import type { ToolCall } from '../core/types';
-import { runBoth } from '../eval/runner';
-import type { ScenarioResult } from '../eval/types';
-import { prettyDate, prettyTime } from '../core/datetime';
+import { Agent } from '../../core/agent';
+import { CHANGE_NOTES, CONFIGS } from '../../core/configs';
+import { Sandbox } from '../../core/tools';
+import type { ToolCall } from '../../core/types';
+import { runBoth } from '../../eval/runner';
+import type { ScenarioResult } from '../../eval/types';
+import { prettyDate, prettyTime } from '../../core/datetime';
 
 type Tab = 'results' | 'scenarios' | 'try' | 'config';
-import { Pill, pct } from './common';
+import { pct } from '../components/format';
 
-export function SimApp() {
+const Pill = ({ pass }: { pass: boolean }) => <span className={`pill ${pass ? 'pass' : 'fail'}`}>{pass ? 'PASS' : 'FAIL'}</span>;
+
+export default function History() {
   const [tab, setTab] = useState<Tab>('results');
   const [run, setRun] = useState(() => runBoth());
   const [runs, setRuns] = useState(1);
@@ -18,7 +20,7 @@ export function SimApp() {
   const open = (id: string) => { setFocus(id); setTab('scenarios'); };
   const tabs: [Tab, string][] = [['results', 'Results'], ['scenarios', 'Scenarios'], ['try', 'Try the agent'], ['config', 'A → B changes']];
   return (
-    <div>
+    <div className="hist">
       <h2 style={{ marginTop: 0 }}>Historical simulator results (version 1)</h2>
       <p>The original harness: {run.A.length} scenarios run against two <strong>rule-based simulated agents</strong>. These are not LLM results and are kept for reference. Real LLM results are under “LLM evaluation”.</p>
       <nav role="tablist">
