@@ -18,6 +18,7 @@ export const CONFIG_A: AgentConfig = {
   requireVerifiedRef: false,
   disclosePolicy: false,
   clarifyUnclear: false,
+  handleCompound: false,
 };
 
 /** Version B: after reviewing Version A's failing scenarios. */
@@ -38,6 +39,7 @@ export const CONFIG_B: AgentConfig = {
   requireVerifiedRef: true,
   disclosePolicy: true,
   clarifyUnclear: true,
+  handleCompound: true,
 };
 
 export const CONFIGS = { A: CONFIG_A, B: CONFIG_B } as const;
@@ -57,5 +59,6 @@ export const CHANGE_NOTES: Record<keyof Omit<AgentConfig, 'id' | 'label'>, strin
   privacyGuardrail: 'Refuse to disclose other patients’ appointments.',
   requireVerifiedRef: 'Reschedule/cancel need confirmation number + name; never claim a change without a successful tool result.',
   disclosePolicy: 'State the $50 late-cancellation fee when it applies.',
+  handleCompound: 'Answer an info question and continue into booking when both appear in one sentence (A answered only the first part).',
   clarifyUnclear: 'Unclear requests get a short menu of supported tasks.',
 };

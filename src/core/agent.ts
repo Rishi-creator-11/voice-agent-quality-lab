@@ -72,17 +72,21 @@ export class Agent {
       return `You're welcome. Thank you for calling ${CLINIC.name}. Goodbye.`;
     }
 
+    const intent: Flow = /cancel/.test(t) ? 'cancel'
+      : /reschedul|move (my|the|it)|change (my|the) (appointment|time|date)|push (it|my)/.test(t) ? 'reschedule'
+      : /book|schedul|appointment|appt|come in|see (the |a )?dentist|reserve/.test(t) ? 'book'
+      : /\b(i'?d like|i want|i need|can i (get|have)|get me|looking for)\b/.test(t) && (Object.values(SERVICES).some((v) => v.words.test(t)) || parseDate(text) || parseTime(text, true)) ? 'book' : null;
     const info = this.answerInfo(t, text);
     if (info !== null) {
+      if (cfg.handleCompound && intent === 'book' && !st.flow) {
+        st.flow = 'book'; st.slots = {}; this.extract(text);
+        return `${info} ${this.bookStep(call)}`;
+      }
       if (st.flow && !cfg.keepStateOnSideQuestion) { st.flow = null; st.slots = {}; st.awaiting = undefined; return info; }
       if (st.flow) { const p = this.nextPrompt(); return p ? `${info} ${p}` : info; }
       return info;
     }
 
-    const intent: Flow = /cancel/.test(t) ? 'cancel'
-      : /reschedul|move (my|the|it)|change (my|the) (appointment|time|date)|push (it|my)/.test(t) ? 'reschedule'
-      : /book|schedul|appointment|appt|come in|see (the |a )?dentist|reserve/.test(t) ? 'book'
-      : /\b(i'?d like|i want|i need|can i (get|have)|get me|looking for)\b/.test(t) && (Object.values(SERVICES).some((v) => v.words.test(t)) || parseDate(text) || parseTime(text, true)) ? 'book' : null;
     if (intent && intent !== st.flow) { st.flow = intent; st.slots = {}; st.awaiting = undefined; }
     if (!st.flow) {
       if (/^(hi|hello|hey|good (morning|afternoon|evening))\b/.test(t) && t.split(/\s+/).length <= 4)

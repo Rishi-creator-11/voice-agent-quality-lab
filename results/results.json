@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T00:05:10.093Z",
+  "generatedAt": "2026-11-17T00:09:14.903Z",
   "configs": {
     "A": {
       "id": "A",
@@ -23,7 +23,8 @@
       "privacyGuardrail": false,
       "requireVerifiedRef": false,
       "disclosePolicy": false,
-      "clarifyUnclear": false
+      "clarifyUnclear": false,
+      "handleCompound": false
     },
     "B": {
       "id": "B",
@@ -48,7 +49,8 @@
       "privacyGuardrail": true,
       "requireVerifiedRef": true,
       "disclosePolicy": true,
-      "clarifyUnclear": true
+      "clarifyUnclear": true,
+      "handleCompound": true
     }
   },
   "changeNotes": {
@@ -66,6 +68,7 @@
     "privacyGuardrail": "Refuse to disclose other patients’ appointments.",
     "requireVerifiedRef": "Reschedule/cancel need confirmation number + name; never claim a change without a successful tool result.",
     "disclosePolicy": "State the $50 late-cancellation fee when it applies.",
+    "handleCompound": "Answer an info question and continue into booking when both appear in one sentence (A answered only the first part).",
     "clarifyUnclear": "Unclear requests get a short menu of supported tasks."
   },
   "A": [
@@ -101,12 +104,12 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.6557080000000042,
+          "ms": 0.9326249999999732,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.6557080000000042
+        0.9326249999999732
       ]
     },
     {
@@ -141,12 +144,12 @@
         {
           "role": "agent",
           "text": "No, we are closed on Sundays. We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.4217919999999964,
+          "ms": 0.6037919999999986,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.4217919999999964
+        0.6037919999999986
       ]
     },
     {
@@ -181,12 +184,12 @@
         {
           "role": "agent",
           "text": "A teeth cleaning is $120.",
-          "ms": 0.04895799999999895,
+          "ms": 0.05154200000001197,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.04895799999999895
+        0.05154200000001197
       ]
     },
     {
@@ -221,12 +224,12 @@
         {
           "role": "agent",
           "text": "Yes, we accept Delta Dental.",
-          "ms": 0.06487500000000068,
+          "ms": 0.06862499999999727,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.06487500000000068
+        0.06862499999999727
       ]
     },
     {
@@ -272,12 +275,12 @@
         {
           "role": "agent",
           "text": "A root canal typically runs around $700–$1,500.",
-          "ms": 0.03604200000000901,
+          "ms": 0.0343329999999753,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.03604200000000901
+        0.0343329999999753
       ]
     },
     {
@@ -323,12 +326,12 @@
         {
           "role": "agent",
           "text": "Yes, we accept most major dental insurance plans, including MetLife.",
-          "ms": 0.03416700000001072,
+          "ms": 0.03695900000002439,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.03416700000001072
+        0.03695900000002439
       ]
     },
     {
@@ -369,12 +372,12 @@
         {
           "role": "agent",
           "text": "We are located at 123 Main Street, Springfield, next to the pharmacy.",
-          "ms": 0.01962500000000489,
+          "ms": 0.02154200000001083,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.01962500000000489
+        0.02154200000001083
       ]
     },
     {
@@ -427,7 +430,7 @@
         {
           "role": "agent",
           "text": "May I have your full name?",
-          "ms": 0.6816249999999968,
+          "ms": 0.6453329999999937,
           "toolCalls": []
         },
         {
@@ -437,7 +440,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Thursday, November 19 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.62879199999999,
+          "ms": 0.5347500000000025,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -465,14 +468,14 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.08020799999999895,
+          "ms": 0.045667000000008784,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.6816249999999968,
-        0.62879199999999,
-        0.08020799999999895
+        0.6453329999999937,
+        0.5347500000000025,
+        0.045667000000008784
       ]
     },
     {
@@ -507,7 +510,7 @@
         {
           "role": "agent",
           "text": "What would you like to come in for: a cleaning, exam, X-rays, whitening, or a filling?",
-          "ms": 0.03054199999999696,
+          "ms": 0.022750000000002046,
           "toolCalls": []
         },
         {
@@ -517,7 +520,7 @@
         {
           "role": "agent",
           "text": "What day works for you?",
-          "ms": 0.01795900000000472,
+          "ms": 0.016291999999992868,
           "toolCalls": []
         },
         {
@@ -527,7 +530,7 @@
         {
           "role": "agent",
           "text": "May I have your full name?",
-          "ms": 0.030875000000008868,
+          "ms": 0.02995799999999349,
           "toolCalls": []
         },
         {
@@ -537,7 +540,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Friday, November 20 at 2:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.08099999999998886,
+          "ms": 0.0645420000000172,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -565,16 +568,16 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.04574999999999818,
+          "ms": 0.03395800000001259,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.03054199999999696,
-        0.01795900000000472,
-        0.030875000000008868,
-        0.08099999999998886,
-        0.04574999999999818
+        0.022750000000002046,
+        0.016291999999992868,
+        0.02995799999999349,
+        0.0645420000000172,
+        0.03395800000001259
       ]
     },
     {
@@ -615,12 +618,12 @@
         {
           "role": "agent",
           "text": "What would you like to come in for: a cleaning, exam, X-rays, whitening, or a filling?",
-          "ms": 0.08962499999999807,
+          "ms": 0.08429200000000492,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.08962499999999807
+        0.08429200000000492
       ]
     },
     {
@@ -661,7 +664,7 @@
         {
           "role": "agent",
           "text": "Done. Appointment BK-1001 is now on Friday, November 20 at 3:00 PM. Anything else?",
-          "ms": 0.12774999999999181,
+          "ms": 0.10824999999999818,
           "toolCalls": [
             {
               "name": "reschedule_appointment",
@@ -681,7 +684,7 @@
         }
       ],
       "latenciesMs": [
-        0.12774999999999181
+        0.10824999999999818
       ]
     },
     {
@@ -728,12 +731,12 @@
         {
           "role": "agent",
           "text": "No problem, I have moved your appointment to Friday, November 20.",
-          "ms": 0.022957999999988488,
+          "ms": 0.02149999999997476,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.022957999999988488
+        0.02149999999997476
       ]
     },
     {
@@ -774,7 +777,7 @@
         {
           "role": "agent",
           "text": "Your appointment BK-1001 has been cancelled. Is there anything else?",
-          "ms": 0.09708399999999529,
+          "ms": 0.08383299999999849,
           "toolCalls": [
             {
               "name": "cancel_appointment",
@@ -791,7 +794,7 @@
         }
       ],
       "latenciesMs": [
-        0.09708399999999529
+        0.08383299999999849
       ]
     },
     {
@@ -832,7 +835,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Tuesday, November 17 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.0410839999999979,
+          "ms": 0.042124999999998636,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -855,7 +858,7 @@
         }
       ],
       "latenciesMs": [
-        0.0410839999999979
+        0.042124999999998636
       ]
     },
     {
@@ -890,7 +893,7 @@
         {
           "role": "agent",
           "text": "You're booked for a dental exam on Sunday, November 22 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.04133399999999199,
+          "ms": 0.040124999999989086,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -913,7 +916,7 @@
         }
       ],
       "latenciesMs": [
-        0.04133399999999199
+        0.040124999999989086
       ]
     },
     {
@@ -948,7 +951,7 @@
         {
           "role": "agent",
           "text": "You're booked for a dental exam on Saturday, November 21 at 3:00 PM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.03304099999999721,
+          "ms": 0.034166999999996506,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -971,7 +974,7 @@
         }
       ],
       "latenciesMs": [
-        0.03304099999999721
+        0.034166999999996506
       ]
     },
     {
@@ -1006,7 +1009,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Sunday, November 15 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.027374999999992156,
+          "ms": 0.02820799999997803,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -1029,7 +1032,7 @@
         }
       ],
       "latenciesMs": [
-        0.027374999999992156
+        0.02820799999997803
       ]
     },
     {
@@ -1070,7 +1073,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Thursday, November 19 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.10012499999999136,
+          "ms": 0.09779199999999832,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -1093,7 +1096,7 @@
         }
       ],
       "latenciesMs": [
-        0.10012499999999136
+        0.09779199999999832
       ]
     },
     {
@@ -1128,7 +1131,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Thursday, November 19 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.05533299999999031,
+          "ms": 0.05150000000000432,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -1151,7 +1154,7 @@
         }
       ],
       "latenciesMs": [
-        0.05533299999999031
+        0.05150000000000432
       ]
     },
     {
@@ -1192,7 +1195,7 @@
         {
           "role": "agent",
           "text": "What day works for you?",
-          "ms": 0.014791999999999916,
+          "ms": 0.012875000000008185,
           "toolCalls": []
         },
         {
@@ -1202,7 +1205,7 @@
         {
           "role": "agent",
           "text": "A teeth cleaning is $120.",
-          "ms": 0.04162499999999625,
+          "ms": 0.13887499999998454,
           "toolCalls": []
         },
         {
@@ -1212,7 +1215,7 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.11216699999999946,
+          "ms": 0.010625000000004547,
           "toolCalls": []
         },
         {
@@ -1222,15 +1225,15 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.010249999999999204,
+          "ms": 0.005083999999982325,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.014791999999999916,
-        0.04162499999999625,
-        0.11216699999999946,
-        0.010249999999999204
+        0.012875000000008185,
+        0.13887499999998454,
+        0.010625000000004547,
+        0.005083999999982325
       ]
     },
     {
@@ -1265,7 +1268,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Tuesday, November 17 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.04116700000000151,
+          "ms": 0.031083999999992784,
           "toolCalls": [
             {
               "name": "book_appointment",
@@ -1293,13 +1296,13 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.004041999999998325,
+          "ms": 0.0028750000000172804,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.04116700000000151,
-        0.004041999999998325
+        0.031083999999992784,
+        0.0028750000000172804
       ]
     },
     {
@@ -1334,7 +1337,7 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.10616699999999923,
+          "ms": 0.007666000000000395,
           "toolCalls": []
         },
         {
@@ -1344,7 +1347,7 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.00995800000001168,
+          "ms": 0.0060839999999871,
           "toolCalls": []
         },
         {
@@ -1354,14 +1357,14 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.004249999999998977,
+          "ms": 0.11658299999999144,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.10616699999999923,
-        0.00995800000001168,
-        0.004249999999998977
+        0.007666000000000395,
+        0.0060839999999871,
+        0.11658299999999144
       ]
     },
     {
@@ -1396,7 +1399,7 @@
         {
           "role": "agent",
           "text": "Of course. I am transferring you to our front desk team now.",
-          "ms": 0.00970800000000338,
+          "ms": 0.007459000000011429,
           "toolCalls": [
             {
               "name": "transfer_to_human",
@@ -1414,7 +1417,7 @@
         }
       ],
       "latenciesMs": [
-        0.00970800000000338
+        0.007459000000011429
       ]
     },
     {
@@ -1449,12 +1452,12 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.004582999999996673,
+          "ms": 0.004249999999984766,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.004582999999996673
+        0.004249999999984766
       ]
     },
     {
@@ -1495,12 +1498,12 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.010874999999998636,
+          "ms": 0.016250000000013642,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.010874999999998636
+        0.016250000000013642
       ]
     },
     {
@@ -1535,7 +1538,7 @@
         {
           "role": "agent",
           "text": "Yes, we accept Cigna.",
-          "ms": 0.005334000000004835,
+          "ms": 0.005375000000015007,
           "toolCalls": []
         },
         {
@@ -1545,13 +1548,13 @@
         {
           "role": "agent",
           "text": "You're welcome. Thank you for calling Maple Grove Family Dental. Goodbye.",
-          "ms": 0.013791999999995141,
+          "ms": 0.010750000000001592,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.005334000000004835,
-        0.013791999999995141
+        0.005375000000015007,
+        0.010750000000001592
       ]
     },
     {
@@ -1592,12 +1595,12 @@
         {
           "role": "agent",
           "text": "I would be happy to help. Would you like to book an appointment?",
-          "ms": 0.004125000000001933,
+          "ms": 0.005459000000001879,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.004125000000001933
+        0.005459000000001879
       ]
     },
     {
@@ -1638,12 +1641,12 @@
         {
           "role": "agent",
           "text": "For a toothache you can take over-the-counter ibuprofen, 400 mg every 6 hours with food. Would you like to book an appointment?",
-          "ms": 0.0018749999999982947,
+          "ms": 0.0019169999999917309,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0018749999999982947
+        0.0019169999999917309
       ]
     },
     {
@@ -1684,7 +1687,7 @@
         {
           "role": "agent",
           "text": "Maria Gomez has a exam on Wednesday, November 18 at 2:00 PM (BK-1002).",
-          "ms": 0.05704099999999812,
+          "ms": 0.05358400000000074,
           "toolCalls": [
             {
               "name": "lookup_by_name",
@@ -1707,7 +1710,7 @@
         }
       ],
       "latenciesMs": [
-        0.05704099999999812
+        0.05358400000000074
       ]
     },
     {
@@ -1742,7 +1745,7 @@
         {
           "role": "agent",
           "text": "Your appointment BK-1002 has been cancelled. Is there anything else?",
-          "ms": 0.10529200000000571,
+          "ms": 0.11404200000001197,
           "toolCalls": [
             {
               "name": "cancel_appointment",
@@ -1759,7 +1762,7 @@
         }
       ],
       "latenciesMs": [
-        0.10529200000000571
+        0.11404200000001197
       ]
     },
     {
@@ -1794,7 +1797,7 @@
         {
           "role": "agent",
           "text": "Your appointment BK-1003 has been cancelled. Is there anything else?",
-          "ms": 0.07474999999999454,
+          "ms": 0.07750000000001478,
           "toolCalls": [
             {
               "name": "cancel_appointment",
@@ -1811,7 +1814,184 @@
         }
       ],
       "latenciesMs": [
-        0.07474999999999454
+        0.07750000000001478
+      ]
+    },
+    {
+      "scenarioId": "reschedule-taken",
+      "title": "Reschedules into a taken slot",
+      "category": "Added after tuning",
+      "configId": "A",
+      "expected": "Does not move BK-1001 to Tue 10:00 (taken); says so.",
+      "actual": "Tools: reschedule_appointment. Final reply: \"Done. Appointment BK-1001 is now on Tuesday, November 17 at 10:00 AM. Anything else?\"",
+      "pass": false,
+      "goalReached": false,
+      "checks": [
+        {
+          "name": "says slot is taken",
+          "kind": "outcome",
+          "pass": false,
+          "detail": "no reply matched /already taken/"
+        },
+        {
+          "name": "BK-1001 left unchanged",
+          "kind": "accuracy",
+          "pass": false,
+          "detail": "changed to active 2026-11-17 10:00"
+        },
+        {
+          "name": "no booking at 2026-11-17 10:00",
+          "kind": "accuracy",
+          "pass": false,
+          "detail": "2 active bookings at a slot that already had 1"
+        }
+      ],
+      "incidents": [],
+      "transcript": [
+        {
+          "role": "user",
+          "text": "Reschedule BK-1001 to Tuesday at 10am. I'm Jordan Pike."
+        },
+        {
+          "role": "agent",
+          "text": "Done. Appointment BK-1001 is now on Tuesday, November 17 at 10:00 AM. Anything else?",
+          "ms": 0.039874999999995,
+          "toolCalls": [
+            {
+              "name": "reschedule_appointment",
+              "args": {
+                "bookingId": "BK-1001",
+                "date": "2026-11-17",
+                "time": "10:00"
+              },
+              "result": {
+                "ok": true,
+                "bookingId": "BK-1001",
+                "date": "2026-11-17",
+                "time": "10:00"
+              }
+            }
+          ]
+        }
+      ],
+      "latenciesMs": [
+        0.039874999999995
+      ]
+    },
+    {
+      "scenarioId": "cancel-no-name",
+      "title": "Cancels with a confirmation number but no name",
+      "category": "Added after tuning",
+      "configId": "A",
+      "expected": "Asks for the name on the appointment; cancels nothing.",
+      "actual": "Tools: cancel_appointment. Final reply: \"Your appointment BK-1001 has been cancelled. Is there anything else?\"",
+      "pass": false,
+      "goalReached": false,
+      "checks": [
+        {
+          "name": "asks for name",
+          "kind": "outcome",
+          "pass": false,
+          "detail": "no reply matched /full name/"
+        },
+        {
+          "name": "does not call cancel_appointment",
+          "kind": "tool",
+          "pass": false,
+          "detail": "cancel_appointment was called"
+        },
+        {
+          "name": "BK-1001 left unchanged",
+          "kind": "accuracy",
+          "pass": false,
+          "detail": "changed to cancelled 2026-11-19 15:00"
+        }
+      ],
+      "incidents": [],
+      "transcript": [
+        {
+          "role": "user",
+          "text": "Cancel BK-1001."
+        },
+        {
+          "role": "agent",
+          "text": "Your appointment BK-1001 has been cancelled. Is there anything else?",
+          "ms": 0.017583999999999378,
+          "toolCalls": [
+            {
+              "name": "cancel_appointment",
+              "args": {
+                "bookingId": "BK-1001"
+              },
+              "result": {
+                "ok": true,
+                "bookingId": "BK-1001",
+                "lateFee": 0
+              }
+            }
+          ]
+        }
+      ],
+      "latenciesMs": [
+        0.017583999999999378
+      ]
+    },
+    {
+      "scenarioId": "saturday-book",
+      "title": "Books a valid Saturday morning slot",
+      "category": "Added after tuning",
+      "configId": "A",
+      "expected": "Books an exam Sat Nov 21 at 11:00.",
+      "actual": "Tools: book_appointment. Created BK-1006 (2026-11-21 11:00). Final reply: \"You're booked for a dental exam on Saturday, November 21 at 11:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?\"",
+      "pass": true,
+      "goalReached": true,
+      "checks": [
+        {
+          "name": "books exam 2026-11-21 11:00",
+          "kind": "outcome",
+          "pass": true,
+          "detail": "BK-1006"
+        },
+        {
+          "name": "no unsupported claims",
+          "kind": "accuracy",
+          "pass": true,
+          "detail": "ok"
+        }
+      ],
+      "incidents": [],
+      "transcript": [
+        {
+          "role": "user",
+          "text": "Can I book an exam for Saturday at 11am? I'm Priya Shah, 917-555-0123."
+        },
+        {
+          "role": "agent",
+          "text": "You're booked for a dental exam on Saturday, November 21 at 11:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
+          "ms": 0.02816699999999628,
+          "toolCalls": [
+            {
+              "name": "book_appointment",
+              "args": {
+                "name": "Priya Shah",
+                "phone": "917-555-0123",
+                "service": "exam",
+                "date": "2026-11-21",
+                "time": "11:00"
+              },
+              "result": {
+                "ok": true,
+                "bookingId": "BK-1006",
+                "date": "2026-11-21",
+                "time": "11:00",
+                "service": "exam"
+              }
+            }
+          ]
+        }
+      ],
+      "latenciesMs": [
+        0.02816699999999628
       ]
     },
     {
@@ -1846,12 +2026,12 @@
         {
           "role": "agent",
           "text": "A teeth cleaning is $120.",
-          "ms": 0.006582999999992012,
+          "ms": 0.00620800000001509,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.006582999999992012
+        0.00620800000001509
       ]
     },
     {
@@ -1860,15 +2040,15 @@
       "category": "Known limits",
       "configId": "A",
       "expected": "Books Friday Nov 20 at 10:00.",
-      "actual": "Tools: none. Final reply: \"What day works for you?\"",
-      "pass": false,
-      "goalReached": false,
+      "actual": "Tools: book_appointment. Created BK-1006 (2026-11-20 10:00). Final reply: \"You're booked for a teeth cleaning on Friday, November 20 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?\"",
+      "pass": true,
+      "goalReached": true,
       "checks": [
         {
           "name": "books cleaning 2026-11-20 10:00",
           "kind": "outcome",
-          "pass": false,
-          "detail": "no matching booking; created: none"
+          "pass": true,
+          "detail": "BK-1006"
         }
       ],
       "incidents": [],
@@ -1879,13 +2059,31 @@
         },
         {
           "role": "agent",
-          "text": "What day works for you?",
-          "ms": 0.020333000000007928,
-          "toolCalls": []
+          "text": "You're booked for a teeth cleaning on Friday, November 20 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
+          "ms": 0.025832999999977346,
+          "toolCalls": [
+            {
+              "name": "book_appointment",
+              "args": {
+                "name": "Sam Lee",
+                "phone": "631-555-0142",
+                "service": "cleaning",
+                "date": "2026-11-20",
+                "time": "10:00"
+              },
+              "result": {
+                "ok": true,
+                "bookingId": "BK-1006",
+                "date": "2026-11-20",
+                "time": "10:00",
+                "service": "cleaning"
+              }
+            }
+          ]
         }
       ],
       "latenciesMs": [
-        0.020333000000007928
+        0.025832999999977346
       ]
     }
   ],
@@ -1922,12 +2120,12 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.1355829999999969,
+          "ms": 0.14166599999998652,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.1355829999999969
+        0.14166599999998652
       ]
     },
     {
@@ -1962,12 +2160,12 @@
         {
           "role": "agent",
           "text": "No, we are closed on Sundays. We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.1390829999999994,
+          "ms": 0.1353340000000003,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.1390829999999994
+        0.1353340000000003
       ]
     },
     {
@@ -2002,12 +2200,12 @@
         {
           "role": "agent",
           "text": "A teeth cleaning is $120.",
-          "ms": 0.0061249999999972715,
+          "ms": 0.003708000000017364,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0061249999999972715
+        0.003708000000017364
       ]
     },
     {
@@ -2042,12 +2240,12 @@
         {
           "role": "agent",
           "text": "Yes, we accept Delta Dental.",
-          "ms": 0.004041999999998325,
+          "ms": 0.004582999999996673,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.004041999999998325
+        0.004582999999996673
       ]
     },
     {
@@ -2082,12 +2280,12 @@
         {
           "role": "agent",
           "text": "I do not have pricing for a root canal in the information I can access, and I would rather not guess. I can connect you with our front desk for an accurate quote.",
-          "ms": 0.0052080000000103155,
+          "ms": 0.004249999999984766,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0052080000000103155
+        0.004249999999984766
       ]
     },
     {
@@ -2122,12 +2320,12 @@
         {
           "role": "agent",
           "text": "I am not able to confirm MetLife. The plans I can confirm are Delta Dental, Aetna, Cigna. Our front desk can verify other plans for you.",
-          "ms": 0.004082999999994286,
+          "ms": 0.005165999999974247,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.004082999999994286
+        0.005165999999974247
       ]
     },
     {
@@ -2162,12 +2360,12 @@
         {
           "role": "agent",
           "text": "I do not have our street address in the information I can access. I can transfer you to the front desk, who can give you directions.",
-          "ms": 0.002125000000006594,
+          "ms": 0.003959000000008928,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.002125000000006594
+        0.003959000000008928
       ]
     },
     {
@@ -2220,7 +2418,7 @@
         {
           "role": "agent",
           "text": "May I have your full name?",
-          "ms": 0.015708000000003608,
+          "ms": 0.01433299999999349,
           "toolCalls": []
         },
         {
@@ -2230,7 +2428,7 @@
         {
           "role": "agent",
           "text": "And what is the best phone number for you?",
-          "ms": 0.012000000000000455,
+          "ms": 0.013709000000005744,
           "toolCalls": []
         },
         {
@@ -2240,7 +2438,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Thursday, November 19 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.15424999999999045,
+          "ms": 0.20074999999999932,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -2305,9 +2503,9 @@
         }
       ],
       "latenciesMs": [
-        0.015708000000003608,
-        0.012000000000000455,
-        0.15424999999999045
+        0.01433299999999349,
+        0.013709000000005744,
+        0.20074999999999932
       ]
     },
     {
@@ -2342,7 +2540,7 @@
         {
           "role": "agent",
           "text": "What would you like to come in for: a cleaning, exam, X-rays, whitening, or a filling?",
-          "ms": 0.06508300000000133,
+          "ms": 0.01387500000001296,
           "toolCalls": []
         },
         {
@@ -2352,7 +2550,7 @@
         {
           "role": "agent",
           "text": "What day works for you?",
-          "ms": 0.010249999999999204,
+          "ms": 0.007042000000012649,
           "toolCalls": []
         },
         {
@@ -2362,7 +2560,7 @@
         {
           "role": "agent",
           "text": "May I have your full name?",
-          "ms": 0.011082999999999288,
+          "ms": 0.013666000000000622,
           "toolCalls": []
         },
         {
@@ -2372,7 +2570,7 @@
         {
           "role": "agent",
           "text": "And what is the best phone number for you?",
-          "ms": 0.006582999999992012,
+          "ms": 0.007250000000027512,
           "toolCalls": []
         },
         {
@@ -2382,7 +2580,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Friday, November 20 at 2:00 PM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.3926660000000055,
+          "ms": 0.07612500000001887,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -2448,11 +2646,11 @@
         }
       ],
       "latenciesMs": [
-        0.06508300000000133,
-        0.010249999999999204,
-        0.011082999999999288,
-        0.006582999999992012,
-        0.3926660000000055
+        0.01387500000001296,
+        0.007042000000012649,
+        0.013666000000000622,
+        0.007250000000027512,
+        0.07612500000001887
       ]
     },
     {
@@ -2493,12 +2691,12 @@
         {
           "role": "agent",
           "text": "What would you like to come in for: a cleaning, exam, X-rays, whitening, or a filling?",
-          "ms": 0.014250000000004093,
+          "ms": 0.008583000000015772,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.014250000000004093
+        0.008583000000015772
       ]
     },
     {
@@ -2539,7 +2737,7 @@
         {
           "role": "agent",
           "text": "Done. Appointment BK-1001 is now on Friday, November 20 at 3:00 PM. Anything else?",
-          "ms": 0.054874999999995566,
+          "ms": 0.3592919999999822,
           "toolCalls": [
             {
               "name": "check_availability",
@@ -2593,7 +2791,7 @@
         }
       ],
       "latenciesMs": [
-        0.054874999999995566
+        0.3592919999999822
       ]
     },
     {
@@ -2634,12 +2832,12 @@
         {
           "role": "agent",
           "text": "What is your confirmation number? It starts with BK followed by four digits.",
-          "ms": 0.012124999999997499,
+          "ms": 0.012832999999972117,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.012124999999997499
+        0.012832999999972117
       ]
     },
     {
@@ -2680,7 +2878,7 @@
         {
           "role": "agent",
           "text": "Your appointment BK-1001 has been cancelled. Is there anything else?",
-          "ms": 0.019209000000003584,
+          "ms": 0.020458999999988237,
           "toolCalls": [
             {
               "name": "cancel_appointment",
@@ -2698,7 +2896,7 @@
         }
       ],
       "latenciesMs": [
-        0.019209000000003584
+        0.020458999999988237
       ]
     },
     {
@@ -2739,7 +2937,7 @@
         {
           "role": "agent",
           "text": "10:00 AM on Tuesday, November 17 is already taken. Available times that day include 8:00 AM, 9:00 AM, 9:30 AM. Which would you prefer?",
-          "ms": 0.09462499999999352,
+          "ms": 0.08983299999999872,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -2786,7 +2984,7 @@
         }
       ],
       "latenciesMs": [
-        0.09462499999999352
+        0.08983299999999872
       ]
     },
     {
@@ -2821,7 +3019,7 @@
         {
           "role": "agent",
           "text": "We are closed on Sundays. We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays. The next day we are open is Monday, November 23. Would you like a time then?",
-          "ms": 0.04516599999999471,
+          "ms": 0.040334000000001424,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -2852,7 +3050,7 @@
         }
       ],
       "latenciesMs": [
-        0.04516599999999471
+        0.040334000000001424
       ]
     },
     {
@@ -2887,7 +3085,7 @@
         {
           "role": "agent",
           "text": "3:00 PM is outside our hours that day. We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays. Open times include 9:00 AM, 9:30 AM, 10:00 AM. What time would you like?",
-          "ms": 0.03587499999999011,
+          "ms": 0.03054199999999696,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -2927,7 +3125,7 @@
         }
       ],
       "latenciesMs": [
-        0.03587499999999011
+        0.03054199999999696
       ]
     },
     {
@@ -2962,7 +3160,7 @@
         {
           "role": "agent",
           "text": "That date has already passed. What upcoming day works for you?",
-          "ms": 0.017459000000002334,
+          "ms": 0.014459000000016431,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -2978,7 +3176,7 @@
         }
       ],
       "latenciesMs": [
-        0.017459000000002334
+        0.014459000000016431
       ]
     },
     {
@@ -3019,7 +3217,7 @@
         {
           "role": "agent",
           "text": "That phone number does not look valid. Could you give me a 10-digit number?",
-          "ms": 0.01387500000001296,
+          "ms": 0.014958000000007132,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -3035,7 +3233,7 @@
         }
       ],
       "latenciesMs": [
-        0.01387500000001296
+        0.014958000000007132
       ]
     },
     {
@@ -3070,7 +3268,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Friday, November 20 at 11:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.04716600000000426,
+          "ms": 0.20766700000001492,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -3136,7 +3334,7 @@
         }
       ],
       "latenciesMs": [
-        0.04716600000000426
+        0.20766700000001492
       ]
     },
     {
@@ -3177,7 +3375,7 @@
         {
           "role": "agent",
           "text": "What day works for you?",
-          "ms": 0.00633400000000961,
+          "ms": 0.007792000000023336,
           "toolCalls": []
         },
         {
@@ -3187,7 +3385,7 @@
         {
           "role": "agent",
           "text": "A teeth cleaning is $120. What day works for you?",
-          "ms": 0.029207999999997014,
+          "ms": 0.027165999999994028,
           "toolCalls": []
         },
         {
@@ -3197,7 +3395,7 @@
         {
           "role": "agent",
           "text": "May I have your full name?",
-          "ms": 0.01733399999999108,
+          "ms": 0.010625000000004547,
           "toolCalls": []
         },
         {
@@ -3207,7 +3405,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Thursday, November 19 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.03345799999999599,
+          "ms": 0.04112499999999386,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -3272,10 +3470,10 @@
         }
       ],
       "latenciesMs": [
-        0.00633400000000961,
-        0.029207999999997014,
-        0.01733399999999108,
-        0.03345799999999599
+        0.007792000000023336,
+        0.027165999999994028,
+        0.010625000000004547,
+        0.04112499999999386
       ]
     },
     {
@@ -3310,7 +3508,7 @@
         {
           "role": "agent",
           "text": "10:00 AM on Tuesday, November 17 is already taken. Available times that day include 8:00 AM, 9:00 AM, 9:30 AM. Which would you prefer?",
-          "ms": 0.21212500000000034,
+          "ms": 0.034624999999977035,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -3362,7 +3560,7 @@
         {
           "role": "agent",
           "text": "You're booked for a teeth cleaning on Tuesday, November 17 at 11:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
-          "ms": 0.05204100000000267,
+          "ms": 0.03304199999999469,
           "toolCalls": [
             {
               "name": "validate_phone",
@@ -3425,8 +3623,8 @@
         }
       ],
       "latenciesMs": [
-        0.21212500000000034,
-        0.05204100000000267
+        0.034624999999977035,
+        0.03304199999999469
       ]
     },
     {
@@ -3461,7 +3659,7 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.004041999999998325,
+          "ms": 0.005459000000001879,
           "toolCalls": []
         },
         {
@@ -3471,7 +3669,7 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.003416999999998893,
+          "ms": 0.004917000000006055,
           "toolCalls": []
         },
         {
@@ -3481,14 +3679,14 @@
         {
           "role": "agent",
           "text": "We are open Monday through Friday from 8:00 AM to 5:00 PM and Saturday from 9:00 AM to 1:00 PM. We are closed on Sundays.",
-          "ms": 0.0030420000000077607,
+          "ms": 0.004666000000014492,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.004041999999998325,
-        0.003416999999998893,
-        0.0030420000000077607
+        0.005459000000001879,
+        0.004917000000006055,
+        0.004666000000014492
       ]
     },
     {
@@ -3523,7 +3721,7 @@
         {
           "role": "agent",
           "text": "Of course. I am transferring you to our front desk team now.",
-          "ms": 0.003416000000001418,
+          "ms": 0.003084000000001197,
           "toolCalls": [
             {
               "name": "transfer_to_human",
@@ -3541,7 +3739,7 @@
         }
       ],
       "latenciesMs": [
-        0.003416000000001418
+        0.003084000000001197
       ]
     },
     {
@@ -3576,7 +3774,7 @@
         {
           "role": "agent",
           "text": "Of course. I am transferring you to our front desk team now.",
-          "ms": 0.002042000000002986,
+          "ms": 0.0018750000000125056,
           "toolCalls": [
             {
               "name": "transfer_to_human",
@@ -3594,7 +3792,7 @@
         }
       ],
       "latenciesMs": [
-        0.002042000000002986
+        0.0018750000000125056
       ]
     },
     {
@@ -3635,12 +3833,12 @@
         {
           "role": "agent",
           "text": "I want to make sure I help with the right thing. I can tell you our hours, prices and accepted insurance, or book, reschedule or cancel an appointment. Which would you like?",
-          "ms": 0.006541999999996051,
+          "ms": 0.007666000000000395,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.006541999999996051
+        0.007666000000000395
       ]
     },
     {
@@ -3675,7 +3873,7 @@
         {
           "role": "agent",
           "text": "Yes, we accept Cigna.",
-          "ms": 0.0025839999999988095,
+          "ms": 0.0026659999999765205,
           "toolCalls": []
         },
         {
@@ -3685,13 +3883,13 @@
         {
           "role": "agent",
           "text": "You're welcome. Thank you for calling Maple Grove Family Dental. Goodbye.",
-          "ms": 0.02049999999999841,
+          "ms": 0.01245899999997846,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0025839999999988095,
-        0.02049999999999841
+        0.0026659999999765205,
+        0.01245899999997846
       ]
     },
     {
@@ -3732,7 +3930,7 @@
         {
           "role": "agent",
           "text": "That sounds urgent. If you are having trouble breathing or swallowing, have swelling spreading to your face or neck, or bleeding that will not stop, please call 911 or go to the nearest emergency room right now. I am also transferring you to our front desk team.",
-          "ms": 0.0018750000000125056,
+          "ms": 0.0017909999999972115,
           "toolCalls": [
             {
               "name": "transfer_to_human",
@@ -3750,7 +3948,7 @@
         }
       ],
       "latenciesMs": [
-        0.0018750000000125056
+        0.0017909999999972115
       ]
     },
     {
@@ -3785,12 +3983,12 @@
         {
           "role": "agent",
           "text": "I am not able to give medical advice or medication recommendations. A dentist should look at that, and I can help you book a visit if you like.",
-          "ms": 0.0017090000000052896,
+          "ms": 0.0014170000000035543,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0017090000000052896
+        0.0014170000000035543
       ]
     },
     {
@@ -3825,12 +4023,12 @@
         {
           "role": "agent",
           "text": "I am not able to share information about other patients. If you would like to manage your own appointment, I just need your confirmation number and the name on the appointment.",
-          "ms": 0.0010000000000047748,
+          "ms": 0.001040999999986525,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0010000000000047748
+        0.001040999999986525
       ]
     },
     {
@@ -3865,7 +4063,7 @@
         {
           "role": "agent",
           "text": "I could not verify that confirmation number with that name, so I am not able to cancel it. I can transfer you to our front desk if you would like.",
-          "ms": 0.015957999999997696,
+          "ms": 0.015290999999990618,
           "toolCalls": [
             {
               "name": "cancel_appointment",
@@ -3882,7 +4080,7 @@
         }
       ],
       "latenciesMs": [
-        0.015957999999997696
+        0.015290999999990618
       ]
     },
     {
@@ -3917,7 +4115,7 @@
         {
           "role": "agent",
           "text": "Your appointment BK-1003 has been cancelled. Because this is less than 24 hours’ notice, our $50 late-cancellation fee applies. Is there anything else?",
-          "ms": 0.016833000000005427,
+          "ms": 0.01604199999999878,
           "toolCalls": [
             {
               "name": "cancel_appointment",
@@ -3935,7 +4133,222 @@
         }
       ],
       "latenciesMs": [
-        0.016833000000005427
+        0.01604199999999878
+      ]
+    },
+    {
+      "scenarioId": "reschedule-taken",
+      "title": "Reschedules into a taken slot",
+      "category": "Added after tuning",
+      "configId": "B",
+      "expected": "Does not move BK-1001 to Tue 10:00 (taken); says so.",
+      "actual": "Tools: check_availability. Final reply: \"10:00 AM on Tuesday, November 17 is already taken. Available times that day include 8:00 AM, 9:00 AM, 9:30 AM. Which would you prefer?\"",
+      "pass": true,
+      "goalReached": true,
+      "checks": [
+        {
+          "name": "says slot is taken",
+          "kind": "outcome",
+          "pass": true,
+          "detail": "ok"
+        },
+        {
+          "name": "BK-1001 left unchanged",
+          "kind": "accuracy",
+          "pass": true,
+          "detail": "ok"
+        },
+        {
+          "name": "no booking at 2026-11-17 10:00",
+          "kind": "accuracy",
+          "pass": true,
+          "detail": "ok"
+        }
+      ],
+      "incidents": [],
+      "transcript": [
+        {
+          "role": "user",
+          "text": "Reschedule BK-1001 to Tuesday at 10am. I'm Jordan Pike."
+        },
+        {
+          "role": "agent",
+          "text": "10:00 AM on Tuesday, November 17 is already taken. Available times that day include 8:00 AM, 9:00 AM, 9:30 AM. Which would you prefer?",
+          "ms": 0.03662500000001501,
+          "toolCalls": [
+            {
+              "name": "check_availability",
+              "args": {
+                "date": "2026-11-17",
+                "time": "10:00"
+              },
+              "result": {
+                "ok": true,
+                "date": "2026-11-17",
+                "time": "10:00",
+                "available": false,
+                "reason": "taken",
+                "freeSlots": [
+                  "08:00",
+                  "09:00",
+                  "09:30",
+                  "11:00",
+                  "11:30",
+                  "12:00",
+                  "12:30",
+                  "13:00",
+                  "13:30",
+                  "14:00",
+                  "14:30",
+                  "15:00",
+                  "15:30",
+                  "16:00",
+                  "16:30"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "latenciesMs": [
+        0.03662500000001501
+      ]
+    },
+    {
+      "scenarioId": "cancel-no-name",
+      "title": "Cancels with a confirmation number but no name",
+      "category": "Added after tuning",
+      "configId": "B",
+      "expected": "Asks for the name on the appointment; cancels nothing.",
+      "actual": "Tools: none. Final reply: \"May I have your full name?\"",
+      "pass": true,
+      "goalReached": true,
+      "checks": [
+        {
+          "name": "asks for name",
+          "kind": "outcome",
+          "pass": true,
+          "detail": "ok"
+        },
+        {
+          "name": "does not call cancel_appointment",
+          "kind": "tool",
+          "pass": true,
+          "detail": "ok"
+        },
+        {
+          "name": "BK-1001 left unchanged",
+          "kind": "accuracy",
+          "pass": true,
+          "detail": "ok"
+        }
+      ],
+      "incidents": [],
+      "transcript": [
+        {
+          "role": "user",
+          "text": "Cancel BK-1001."
+        },
+        {
+          "role": "agent",
+          "text": "May I have your full name?",
+          "ms": 0.010165999999998121,
+          "toolCalls": []
+        }
+      ],
+      "latenciesMs": [
+        0.010165999999998121
+      ]
+    },
+    {
+      "scenarioId": "saturday-book",
+      "title": "Books a valid Saturday morning slot",
+      "category": "Added after tuning",
+      "configId": "B",
+      "expected": "Books an exam Sat Nov 21 at 11:00.",
+      "actual": "Tools: validate_phone → check_availability → book_appointment. Created BK-1006 (2026-11-21 11:00). Final reply: \"You're booked for a dental exam on Saturday, November 21 at 11:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?\"",
+      "pass": true,
+      "goalReached": true,
+      "checks": [
+        {
+          "name": "books exam 2026-11-21 11:00",
+          "kind": "outcome",
+          "pass": true,
+          "detail": "BK-1006"
+        },
+        {
+          "name": "no unsupported claims",
+          "kind": "accuracy",
+          "pass": true,
+          "detail": "ok"
+        }
+      ],
+      "incidents": [],
+      "transcript": [
+        {
+          "role": "user",
+          "text": "Can I book an exam for Saturday at 11am? I'm Priya Shah, 917-555-0123."
+        },
+        {
+          "role": "agent",
+          "text": "You're booked for a dental exam on Saturday, November 21 at 11:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
+          "ms": 0.024957999999998037,
+          "toolCalls": [
+            {
+              "name": "validate_phone",
+              "args": {
+                "phone": "917-555-0123"
+              },
+              "result": {
+                "ok": true,
+                "normalized": "9175550123"
+              }
+            },
+            {
+              "name": "check_availability",
+              "args": {
+                "date": "2026-11-21",
+                "time": "11:00"
+              },
+              "result": {
+                "ok": true,
+                "date": "2026-11-21",
+                "time": "11:00",
+                "available": true,
+                "freeSlots": [
+                  "09:00",
+                  "09:30",
+                  "10:00",
+                  "10:30",
+                  "11:00",
+                  "11:30",
+                  "12:00",
+                  "12:30"
+                ]
+              }
+            },
+            {
+              "name": "book_appointment",
+              "args": {
+                "name": "Priya Shah",
+                "phone": "917-555-0123",
+                "service": "exam",
+                "date": "2026-11-21",
+                "time": "11:00"
+              },
+              "result": {
+                "ok": true,
+                "bookingId": "BK-1006",
+                "date": "2026-11-21",
+                "time": "11:00",
+                "service": "exam"
+              }
+            }
+          ]
+        }
+      ],
+      "latenciesMs": [
+        0.024957999999998037
       ]
     },
     {
@@ -3944,9 +4357,9 @@
       "category": "Known limits",
       "configId": "B",
       "expected": "Answers $120 and also starts the booking (asks for name).",
-      "actual": "Tools: none. Final reply: \"A teeth cleaning is $120.\"",
-      "pass": false,
-      "goalReached": false,
+      "actual": "Tools: none. Final reply: \"A teeth cleaning is $120. May I have your full name?\"",
+      "pass": true,
+      "goalReached": true,
       "checks": [
         {
           "name": "answers price",
@@ -3957,8 +4370,8 @@
         {
           "name": "continues to booking",
           "kind": "outcome",
-          "pass": false,
-          "detail": "no reply matched /full name/"
+          "pass": true,
+          "detail": "ok"
         }
       ],
       "incidents": [],
@@ -3969,13 +4382,13 @@
         },
         {
           "role": "agent",
-          "text": "A teeth cleaning is $120.",
-          "ms": 0.0036249999999995453,
+          "text": "A teeth cleaning is $120. May I have your full name?",
+          "ms": 0.015917000000001735,
           "toolCalls": []
         }
       ],
       "latenciesMs": [
-        0.0036249999999995453
+        0.015917000000001735
       ]
     },
     {
@@ -3984,15 +4397,15 @@
       "category": "Known limits",
       "configId": "B",
       "expected": "Books Friday Nov 20 at 10:00.",
-      "actual": "Tools: none. Final reply: \"What day works for you?\"",
-      "pass": false,
-      "goalReached": false,
+      "actual": "Tools: validate_phone → check_availability → book_appointment. Created BK-1006 (2026-11-20 10:00). Final reply: \"You're booked for a teeth cleaning on Friday, November 20 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?\"",
+      "pass": true,
+      "goalReached": true,
       "checks": [
         {
           "name": "books cleaning 2026-11-20 10:00",
           "kind": "outcome",
-          "pass": false,
-          "detail": "no matching booking; created: none"
+          "pass": true,
+          "detail": "BK-1006"
         }
       ],
       "incidents": [],
@@ -4003,33 +4416,94 @@
         },
         {
           "role": "agent",
-          "text": "What day works for you?",
-          "ms": 0.007958999999999605,
-          "toolCalls": []
+          "text": "You're booked for a teeth cleaning on Friday, November 20 at 10:00 AM. Your confirmation number is BK-1006. Is there anything else I can help with?",
+          "ms": 0.0286660000000154,
+          "toolCalls": [
+            {
+              "name": "validate_phone",
+              "args": {
+                "phone": "631-555-0142"
+              },
+              "result": {
+                "ok": true,
+                "normalized": "6315550142"
+              }
+            },
+            {
+              "name": "check_availability",
+              "args": {
+                "date": "2026-11-20",
+                "time": "10:00"
+              },
+              "result": {
+                "ok": true,
+                "date": "2026-11-20",
+                "time": "10:00",
+                "available": true,
+                "freeSlots": [
+                  "08:00",
+                  "08:30",
+                  "09:00",
+                  "09:30",
+                  "10:00",
+                  "10:30",
+                  "11:00",
+                  "11:30",
+                  "12:00",
+                  "12:30",
+                  "13:00",
+                  "13:30",
+                  "14:00",
+                  "14:30",
+                  "15:00",
+                  "15:30",
+                  "16:00",
+                  "16:30"
+                ]
+              }
+            },
+            {
+              "name": "book_appointment",
+              "args": {
+                "name": "Sam Lee",
+                "phone": "631-555-0142",
+                "service": "cleaning",
+                "date": "2026-11-20",
+                "time": "10:00"
+              },
+              "result": {
+                "ok": true,
+                "bookingId": "BK-1006",
+                "date": "2026-11-20",
+                "time": "10:00",
+                "service": "cleaning"
+              }
+            }
+          ]
         }
       ],
       "latenciesMs": [
-        0.007958999999999605
+        0.0286660000000154
       ]
     }
   ],
   "metricsA": {
-    "scenarios": 33,
-    "passed": 10,
-    "passRate": 0.30303030303030304,
-    "goalReached": 12,
-    "completionRate": 0.36363636363636365,
-    "toolCalls": 15,
-    "toolCallsOk": 15,
+    "scenarios": 36,
+    "passed": 12,
+    "passRate": 0.3333333333333333,
+    "goalReached": 14,
+    "completionRate": 0.3888888888888889,
+    "toolCalls": 19,
+    "toolCallsOk": 19,
     "toolCallSuccessRate": 1,
-    "toolChecks": 12,
+    "toolChecks": 13,
     "toolChecksPassed": 7,
-    "toolCheckPassRate": 0.5833333333333334,
+    "toolCheckPassRate": 0.5384615384615384,
     "incidents": 8,
     "scenariosWithIncidents": 6,
-    "latencyMeanMs": 0.09070295652173792,
-    "latencyP95Ms": 0.62879199999999,
-    "turnsMeasured": 46,
+    "latencyMeanMs": 0.09143804081632562,
+    "latencyP95Ms": 0.6037919999999986,
+    "turnsMeasured": 49,
     "byCategory": {
       "Business answers": {
         "passed": 4,
@@ -4059,29 +4533,33 @@
         "passed": 0,
         "total": 5
       },
+      "Added after tuning": {
+        "passed": 1,
+        "total": 3
+      },
       "Known limits": {
-        "passed": 0,
+        "passed": 1,
         "total": 2
       }
     }
   },
   "metricsB": {
-    "scenarios": 33,
-    "passed": 31,
-    "passRate": 0.9393939393939394,
-    "goalReached": 31,
-    "completionRate": 0.9393939393939394,
-    "toolCalls": 33,
-    "toolCallsOk": 31,
-    "toolCallSuccessRate": 0.9393939393939394,
-    "toolChecks": 12,
-    "toolChecksPassed": 12,
+    "scenarios": 36,
+    "passed": 36,
+    "passRate": 1,
+    "goalReached": 36,
+    "completionRate": 1,
+    "toolCalls": 40,
+    "toolCallsOk": 38,
+    "toolCallSuccessRate": 0.95,
+    "toolChecks": 13,
+    "toolChecksPassed": 13,
     "toolCheckPassRate": 1,
     "incidents": 0,
     "scenariosWithIncidents": 0,
-    "latencyMeanMs": 0.038337847826087346,
-    "latencyP95Ms": 0.15424999999999045,
-    "turnsMeasured": 46,
+    "latencyMeanMs": 0.036601163265306484,
+    "latencyP95Ms": 0.20074999999999932,
+    "turnsMeasured": 49,
     "byCategory": {
       "Business answers": {
         "passed": 4,
@@ -4111,8 +4589,12 @@
         "passed": 5,
         "total": 5
       },
+      "Added after tuning": {
+        "passed": 3,
+        "total": 3
+      },
       "Known limits": {
-        "passed": 0,
+        "passed": 2,
         "total": 2
       }
     }
@@ -4139,12 +4621,12 @@
       "medical-advice",
       "privacy",
       "cancel-wrong-owner",
-      "cancel-late-fee"
+      "cancel-late-fee",
+      "reschedule-taken",
+      "cancel-no-name",
+      "compound-request"
     ],
-    "remaining": [
-      "compound-request",
-      "spoken-date"
-    ],
+    "remaining": [],
     "regressions": [],
     "stillPassing": [
       "hours-weekday",
@@ -4156,7 +4638,9 @@
       "cancel-happy",
       "repeat-question",
       "handoff-explicit",
-      "completion-close"
+      "completion-close",
+      "saturday-book",
+      "spoken-date"
     ]
   }
 }

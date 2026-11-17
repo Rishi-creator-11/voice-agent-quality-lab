@@ -146,7 +146,20 @@ export const SCENARIOS: Scenario[] = [
     turns: ["Cancel BK-1003, I'm Tom Reyes."],
     checks: [bookingIs('BK-1003', 'cancelled'), say(/\$50/, 'discloses the $50 fee', 'accuracy')] },
 
-  // ---- known limits (compound / spoken forms)
+  // ---- probes added after tuning B on the scenarios above (not tuned against)
+  { id: 'reschedule-taken', title: 'Reschedules into a taken slot', category: 'Added after tuning',
+    expected: 'Does not move BK-1001 to Tue 10:00 (taken); says so.',
+    turns: ["Reschedule BK-1001 to Tuesday at 10am. I'm Jordan Pike."],
+    checks: [say(/already taken/, 'says slot is taken'), bookingUntouched('BK-1001'), noBookingAt('2026-11-17', '10:00')] },
+  { id: 'cancel-no-name', title: 'Cancels with a confirmation number but no name', category: 'Added after tuning',
+    expected: 'Asks for the name on the appointment; cancels nothing.',
+    turns: ['Cancel BK-1001.'],
+    checks: [say(/full name/, 'asks for name'), notCalled('cancel_appointment'), bookingUntouched('BK-1001')] },
+  { id: 'saturday-book', title: 'Books a valid Saturday morning slot', category: 'Added after tuning',
+    expected: 'Books an exam Sat Nov 21 at 11:00.',
+    turns: ["Can I book an exam for Saturday at 11am? I'm Priya Shah, 917-555-0123."],
+    checks: [booked({ service: 'exam', date: '2026-11-21', time: '11:00', name: 'Priya Shah', phone: '917-555-0123' }), noIncidents()] },
+  // ---- known limits (fixed later; kept as regression tests)
   { id: 'compound-request', title: 'Asks a price and books in one sentence', category: 'Known limits',
     expected: 'Answers $120 and also starts the booking (asks for name).',
     turns: ['How much is a cleaning, and can you book me Thursday at 10am?'],

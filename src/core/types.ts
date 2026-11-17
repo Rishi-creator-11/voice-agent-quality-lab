@@ -36,6 +36,8 @@ export interface AgentConfig {
   requireVerifiedRef: boolean;
   /** States cancellation-fee policy when a cancellation is inside 24h. */
   disclosePolicy: boolean;
+  /** Answers an info question and continues into booking when both are in one utterance. */
+  handleCompound: boolean;
   /** Unclear requests get a menu of what the agent can do instead of a guess. */
   clarifyUnclear: boolean;
 }

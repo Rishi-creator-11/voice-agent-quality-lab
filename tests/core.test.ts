@@ -8,6 +8,8 @@ describe('datetime', () => {
     expect(parseDate('tomorrow')?.iso).toBe('2026-11-17');
     expect(parseDate('yesterday')?.iso).toBe('2026-11-15');
     expect(parseDate('november 20th')?.iso).toBe('2026-11-20');
+    expect(parseDate('the twentieth')?.iso).toBe('2026-11-20');
+    expect(parseDate('the first')?.iso).toBe('2026-12-01');
     expect(parseDate('no date here')).toBeNull();
   });
   it('last=true picks the correction', () => {

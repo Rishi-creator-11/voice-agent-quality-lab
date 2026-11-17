@@ -1,6 +1,6 @@
 # Voice Agent Quality Lab
 
-A QA harness for appointment-booking voice agents: 33 scripted scenarios, deterministic checks, tool-call tracing, and a before/after comparison of two agent configurations. Dental-clinic domain, fictional, synthetic data only.
+A QA harness for appointment-booking voice agents: 36 scripted scenarios, deterministic checks, tool-call tracing, and a before/after comparison of two agent configurations. Dental-clinic domain, fictional, synthetic data only.
 
 **Independent project. Not affiliated with, built on, or approved by Regal.** Built as a work sample for an AI Product Specialist role; see [docs/REGAL_MAPPING.md](docs/REGAL_MAPPING.md).
 
@@ -18,16 +18,17 @@ A QA harness for appointment-booking voice agents: 33 scripted scenarios, determ
 
 | Metric | A initial | B improved |
 |---|---|---|
-| Scenarios passed | 10/33 | 31/33 |
-| Goal reached (completion) | 12/33 | 31/33 |
-| Tool-use checks passed | 7/12 | 12/12 |
+| Scenarios passed | 12/36 | 36/36 |
+| Goal reached (completion) | 14/36 | 36/36 |
+| Tool-use checks passed | 7/13 | 13/13 |
 | Unsupported-claim incidents | 8 (6 scenarios) | 0 |
 | Regressions A→B | | 0 |
 
-Still failing in B (known limits): `compound-request` (price question + booking in one sentence; only the first is handled) and `spoken-date` ("the twentieth").
-Latency is measured in-process agent logic only (~0.02–0.05 ms mean); it excludes speech, LLM and network and says nothing about real voice latency.
+**Read the 36/36 carefully.** B was tuned against the first 33 scenarios until they passed, so a perfect score there is not evidence of general quality. Three probes (`reschedule-taken`, `cancel-no-name`, `saturday-book`) were written afterwards and not tuned against; B passed all three (A passed one). Three probes is too few to claim generalization.
 
-**Process note:** the first full run gave B 28/33. The suite exposed two bugs in the shared agent code (booking intent missed for "I'd like an exam Sunday…", and a prompt example `BK-1234` that tripped the invented-ID detector). Both were fixed, then the suite re-run; reported numbers are post-fix. Scenarios were written by one author, so results describe these 33 cases, not general quality.
+History: B first scored 28/33. The suite exposed two bugs in shared agent code (booking intent missed for "I'd like an exam Sunday…"; a prompt example `BK-1234` that tripped the invented-ID detector). After fixing those B scored 31/33; the remaining two (`compound-request`, `spoken-date`) were then fixed by adding a `handleCompound` config flag and spoken-ordinal date parsing, and both stay in the suite as regression tests. Reported numbers are post-fix.
+
+Latency is measured in-process agent logic only (well under 1 ms); it excludes speech, LLM and network and says nothing about real voice latency. Scenarios were written by one author, so results describe these cases, not general quality.
 
 ## How it works
 

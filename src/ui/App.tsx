@@ -150,8 +150,8 @@ function Config() {
       {changed.map((k) => <tr key={k}><td><code>{k}</code></td><td>{show(CONFIGS.A[k])}</td><td>{show(CONFIGS.B[k])}</td><td className="hide-sm small">{CHANGE_NOTES[k]}</td></tr>)}</tbody></table>
     <h2>Limitations</h2><ul className="small">
       <li>Agents are rule-based simulators. Configuration flags encode typical weak vs. improved behavior; the harness (scenarios, checks, metrics, diffing) is the reusable part and is agent-agnostic.</li>
-      <li>Scenarios were written by one author; results show these 33 cases, not general quality.</li>
-      <li>Two scenarios fail in both versions by design of the current agent: compound requests and dates spoken as words.</li>
+      <li>Scenarios were written by one author and B was tuned until it passed the first 33, so B’s perfect score is not evidence of general quality. Three probes (category “Added after tuning”) were written afterwards and not tuned against.</li>
+      <li>Compound requests and dates spoken as words failed in the first version of B and were fixed; they stay in the suite as regression tests.</li>
       <li>Latency covers agent logic only. No speech recognition, synthesis, LLM, or network time.</li>
     </ul></>);
 }

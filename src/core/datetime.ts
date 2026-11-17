@@ -47,6 +47,14 @@ export function parseDate(text: string, today = SANDBOX_TODAY, last = false): Pa
     if (iso < today) iso = `${year + 1}-${pad(mo + 1)}-${pad(Number(m[2]))}`;
     push(m.index, iso);
   }
+  const ORD = ['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth','thirteenth','fourteenth','fifteenth','sixteenth','seventeenth','eighteenth','nineteenth','twentieth','twenty-first','twenty-second','twenty-third','twenty-fourth','twenty-fifth','twenty-sixth','twenty-seventh','twenty-eighth','twenty-ninth','thirtieth','thirty-first'];
+  const rxOrd = new RegExp(`\\bthe (${ORD.join('|')})\\b`, 'g');
+  while ((m = rxOrd.exec(t))) {
+    const day = ORD.indexOf(m[1]) + 1;
+    let iso = `${today.slice(0, 7)}-${pad(day)}`;
+    if (iso < today) { const d = fromISO(today); iso = `${d.getUTCMonth() === 11 ? d.getUTCFullYear() + 1 : d.getUTCFullYear()}-${pad(((d.getUTCMonth() + 1) % 12) + 1)}-${pad(day)}`; }
+    push(m.index, iso);
+  }
   const rxNum = /\b(\d{1,2})\/(\d{1,2})\b/g;
   while ((m = rxNum.exec(t))) push(m.index, `${today.slice(0, 4)}-${pad(Number(m[1]))}-${pad(Number(m[2]))}`);
   if (!found.length) return null;
