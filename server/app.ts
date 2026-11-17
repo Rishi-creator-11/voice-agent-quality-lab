@@ -12,7 +12,7 @@ import { runEval } from './eval/runner';
 import { listRuns, loadRun, saveRun, exportPublic } from './eval/store';
 import { summarizeRun } from '../src/llm/metrics';
 
-interface Session { conv: Conversation; lastUsed: number; ipHash: string; }
+interface Session { conv: Conversation; lastUsed: number; ipHash: string; busy: boolean; }
 interface EvalJob { id: string; status: 'running' | 'done' | 'failed' | 'cancelled'; done: number; total: number; runId?: string; error?: string; cancel: boolean; }
 
 export interface Deps { config: Config; client: LlmClient; llmConfigured: boolean; now?: () => number; log?: (line: string) => void; }
@@ -23,7 +23,7 @@ const same = (a: string, b: string) => { const x = Buffer.from(a), y = Buffer.fr
 export function createApp(d: Deps) {
   const { config: cfg, client } = d; const now = d.now ?? Date.now; const log = d.log ?? ((l) => console.log(l));
   const sessions = new Map<string, Session>();
-  let chatEnabled = cfg.publicChatEnabled; let spendDay = new Date(now()).toISOString().slice(0, 10); let spendUsd = 0; let evalJob: EvalJob | null = null;
+  let reservedUsd = 0; let inflight = 0; let chatEnabled = cfg.publicChatEnabled; let spendDay = new Date(now()).toISOString().slice(0, 10); let spendUsd = 0; let evalJob: EvalJob | null = null;
   const rollDay = () => { const t = new Date(now()).toISOString().slice(0, 10); if (t !== spendDay) { spendDay = t; spendUsd = 0; } };
 
   const app = express();
@@ -56,7 +56,7 @@ export function createApp(d: Deps) {
     rollDay(); sweep();
     if (!d.llmConfigured) return void res.status(503).json({ error: 'LLM_NOT_CONFIGURED', message: 'No model API key is configured on the server.' });
     if (!chatEnabled) return void res.status(503).json({ error: 'CHAT_DISABLED', message: 'Live chat is currently switched off.' });
-    if (spendUsd >= cfg.dailyBudgetUsd) return void res.status(503).json({ error: 'DAILY_BUDGET_REACHED', message: 'The demo reached its daily usage budget. Results from recorded evaluation runs are still available.' });
+    if (spendUsd + reservedUsd + cfg.turnReserveUsd > cfg.dailyBudgetUsd) return void res.status(503).json({ error: 'DAILY_BUDGET_REACHED', message: 'The demo reached its daily usage budget. Results from recorded evaluation runs are still available.' });
     const p = chatBody.safeParse(req.body);
     if (!p.success) return void res.status(400).json({ error: 'VALIDATION', issues: p.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`) });
     let s = p.data.sessionId ? sessions.get(p.data.sessionId) : undefined;
@@ -64,12 +64,19 @@ export function createApp(d: Deps) {
     if (s && s.conv.agent !== p.data.agent) return void res.status(400).json({ error: 'AGENT_MISMATCH', message: 'Start a new conversation to switch agents.' });
     if (!s) {
       if (sessions.size >= cfg.maxSessions) return void res.status(503).json({ error: 'AT_CAPACITY', message: 'Too many active conversations. Try again in a few minutes.' });
-      s = { conv: new Conversation(p.data.agent, client), lastUsed: now(), ipHash: hash(req.ip ?? '') };
+      s = { conv: new Conversation(p.data.agent, client), lastUsed: now(), ipHash: hash(req.ip ?? ''), busy: false };
     }
+    if (s.busy) return void res.status(409).json({ error: 'TURN_IN_PROGRESS', message: 'Wait for the previous reply before sending another message.' });
+    if (inflight >= cfg.maxConcurrentChats) return void res.status(503).json({ error: 'AT_CAPACITY', message: 'The demo is busy. Try again in a moment.' });
     if (s.conv.userTurns >= cfg.maxTurnsPerSession) return void res.status(429).json({ error: 'SESSION_TURN_LIMIT', message: `This conversation reached its ${cfg.maxTurnsPerSession}-message limit. Start a new one.` });
     if (s.conv.usage.costUsd >= cfg.sessionCostCapUsd) return void res.status(429).json({ error: 'SESSION_COST_LIMIT', message: 'This conversation reached its usage limit. Start a new one.' });
     const id = p.data.sessionId ?? randomUUID(); sessions.set(id, s); s.lastUsed = now();
-    const r = await s.conv.send(p.data.message);
+    // One in-flight turn per session, worst-case cost reserved up front and settled to actual cost afterwards.
+    s.busy = true; inflight++; reservedUsd += cfg.turnReserveUsd;
+    let r;
+    try { r = await s.conv.send(p.data.message); }
+    catch { return void res.status(502).json({ error: 'UPSTREAM_ERROR', sessionId: id, message: 'The agent failed for this message. Please try again.' }); }
+    finally { s.busy = false; inflight--; reservedUsd -= cfg.turnReserveUsd; }
     spendUsd += r.usage.costUsd;
     // Upstream error details are not forwarded to the browser.
     if (r.error) return void res.status(502).json({ error: 'UPSTREAM_ERROR', sessionId: id, message: 'The model service failed for this message. Please try again.' });

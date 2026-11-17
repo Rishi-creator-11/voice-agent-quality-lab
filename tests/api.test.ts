@@ -87,6 +87,26 @@ describe('chat API', () => {
   });
 });
 
+describe('concurrency and budget reservation', () => {
+  const slow = (ms: number): LlmClient => ({ async complete() { await new Promise((r) => setTimeout(r, ms)); return { content: say('ok'), stopReason: 'end_turn', inputTokens: 10, outputTokens: 5, ms }; } });
+  it('allows only one in-flight turn per session', async () => {
+    const a = make({}, slow(80));
+    const first = await chat(a, { agent: 'A', message: 'hi' });
+    const [x, y] = await Promise.all([chat(a, { agent: 'A', message: 'one', sessionId: first.body.sessionId }), chat(a, { agent: 'A', message: 'two', sessionId: first.body.sessionId })]);
+    expect([x.status, y.status].sort()).toEqual([200, 409]);
+  });
+  it('caps concurrent upstream chats', async () => {
+    const a = make({ MAX_CONCURRENT_CHATS: '1' }, slow(80));
+    const rs = await Promise.all([chat(a, { agent: 'A', message: '1' }), chat(a, { agent: 'A', message: '2' })]);
+    expect(rs.map((r) => r.status).sort()).toEqual([200, 503]);
+  });
+  it('reserves worst-case cost so parallel requests cannot overshoot the daily budget', async () => {
+    const a = make({ DAILY_BUDGET_USD: '0.015', TURN_RESERVE_USD: '0.01' }, slow(80));
+    const rs = await Promise.all([chat(a, { agent: 'A', message: '1' }), chat(a, { agent: 'A', message: '2' })]);
+    expect(rs.map((r) => r.status).sort()).toEqual([200, 503]);
+  });
+});
+
 describe('admin eval API and logging', () => {
   it('requires the admin token', async () => {
     const a = make();

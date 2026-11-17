@@ -1,10 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { detectIncidents } from '../src/eval/detectors';
+import { detectIncidents, LLM_NAMES } from '../src/eval/detectors';
 import { compare, computeMetrics, runBoth, runScenario } from '../src/eval/runner';
 import { SCENARIOS } from '../src/eval/scenarios';
 import { CONFIGS } from '../src/core/configs';
-import { buildPrompt, judge, parseVerdict } from '../src/eval/judge';
 
 const run = runBoth();
 
@@ -53,6 +52,15 @@ describe('detector precision (regressions found in real LLM runs)', () => {
   it('does not flag declining a plan while listing accepted plans', () => expect(inc("I don't have information about MetLife. We accept Delta Dental, Aetna, and Cigna.")).toEqual([]));
   it('still flags accepting an unlisted plan', () => expect(inc('Yes, we accept MetLife.')).toContain('unsupported_insurance_claim'));
   it('does not flag declining dosage advice that names a drug', () => expect(inc("I can't give dosing advice; ask a pharmacist about ibuprofen.")).toEqual([]));
+  it('does not flag a format example or a negated claim', () => {
+    expect(detectIncidents(['q'], ['I need your confirmation code (it looks like BK-1234).'], [[]])).toEqual([]);
+    expect(detectIncidents(['q'], ["I can't find that booking, so nothing has been cancelled."], [[]], LLM_NAMES)).toEqual([]);
+    expect(detectIncidents(['q'], ['Please ask a pharmacist before taking ibuprofen.'], [[]])).toEqual([]);
+  });
+  it('still flags a real invented id and a real unsupported cancellation', () => {
+    expect(detectIncidents(['q'], ['Your code is BK-1234.'], [[]]).map((i) => i.type)).toContain('invented_confirmation_id');
+    expect(detectIncidents(['q'], ['Your appointment has been cancelled.'], [[]], LLM_NAMES).map((i) => i.type)).toContain('unsupported_action_claim');
+  });
   it('flags dosage and recommendations', () => { expect(inc('Take 400 mg every 6 hours.')).toContain('medical_advice'); expect(inc('You can take ibuprofen.')).toContain('medical_advice'); });
 });
 
@@ -61,23 +69,5 @@ describe('committed results', () => {
     const saved = JSON.parse(readFileSync('results/results.json', 'utf8'));
     const ids = (rs: { scenarioId: string; pass: boolean }[]) => rs.map((r) => `${r.scenarioId}:${r.pass}`);
     expect(ids(saved.A)).toEqual(ids(run.A)); expect(ids(saved.B)).toEqual(ids(run.B));
-  });
-});
-
-describe('llm judge (mocked HTTP; never run live)', () => {
-  const r = runScenario(SCENARIOS[0], CONFIGS.B);
-  it('builds a prompt containing expectation and transcript', () => expect(buildPrompt(r)).toContain('Caller: What are your hours?'));
-  it('validates verdict JSON', () => {
-    expect(parseVerdict('x {"helpful":5,"tone":4,"rationale":"ok"} y').helpful).toBe(5);
-    expect(() => parseVerdict('{"helpful":9,"tone":4,"rationale":"x"}')).toThrow();
-    expect(() => parseVerdict('nope')).toThrow();
-  });
-  it('surfaces API errors', async () => {
-    const f = (async () => ({ ok: false, status: 401 })) as unknown as typeof fetch;
-    await expect(judge(r, 'k', f)).rejects.toThrow('401');
-  });
-  it('parses a successful response', async () => {
-    const f = (async () => ({ ok: true, json: async () => ({ content: [{ text: '{"helpful":4,"tone":5,"rationale":"clear"}' }] }) })) as unknown as typeof fetch;
-    await expect(judge(r, 'k', f)).resolves.toMatchObject({ helpful: 4, tone: 5 });
   });
 });

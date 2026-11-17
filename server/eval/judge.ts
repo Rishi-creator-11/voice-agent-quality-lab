@@ -17,7 +17,12 @@ export function parseJudge(text: string, model: string): Judge {
   return { clarity: v.clarity, helpfulness: v.helpfulness, completeness: v.completeness, rationale: v.rationale, model };
 }
 export async function judgeTranscript(client: LlmClient, expected: string, turns: TraceTurn[]): Promise<{ judge: Judge; costUsd: number }> {
-  const r = await client.complete({ system: 'You are a strict, concise evaluator of customer-service conversations.', messages: [{ role: 'user', content: judgePrompt(expected, turns) }], tools: [], maxTokens: 300, model: JUDGE_MODEL });
-  const text = r.content.filter((b) => b.type === 'text').map((b) => (b as { text: string }).text).join('');
-  return { judge: parseJudge(text, JUDGE_MODEL), costUsd: (r.inputTokens * JUDGE_PRICE.inPerMTok + r.outputTokens * JUDGE_PRICE.outPerMTok) / 1e6 };
+  let cost = 0; let lastErr: Error | undefined;
+  for (let attempt = 0; attempt < 2; attempt++) { // one retry if the reply is not valid JSON
+    const r = await client.complete({ system: 'You are a strict, concise evaluator of customer-service conversations. Output only the requested JSON object.', messages: [{ role: 'user', content: judgePrompt(expected, turns) }], tools: [], maxTokens: 600, model: JUDGE_MODEL });
+    cost += (r.inputTokens * JUDGE_PRICE.inPerMTok + r.outputTokens * JUDGE_PRICE.outPerMTok) / 1e6;
+    try { return { judge: parseJudge(r.content.filter((b) => b.type === 'text').map((b) => (b as { text: string }).text).join(''), JUDGE_MODEL), costUsd: cost }; }
+    catch (e) { lastErr = e as Error; }
+  }
+  throw lastErr!;
 }

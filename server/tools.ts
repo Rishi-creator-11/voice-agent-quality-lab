@@ -34,17 +34,17 @@ export class ClinicBackend {
 
   execute(tool: string, raw: unknown): ToolResult {
     let result: ToolResult;
-    const schema = (SCHEMAS as Record<string, z.ZodTypeAny>)[tool];
-    if (!schema) result = { ok: false, error: 'UNKNOWN_TOOL' };
-    else {
-      const p = schema.safeParse(raw ?? {});
-      if (!p.success) result = { ok: false, error: 'VALIDATION', issues: p.error.issues.map((i) => `${i.path.join('.') || 'input'}: ${i.message}`) };
+    try {
+      // Own-property allowlist: model-supplied names like "constructor" or "__proto__" must not resolve.
+      if (!Object.hasOwn(SCHEMAS, tool)) result = { ok: false, error: 'UNKNOWN_TOOL' };
       else {
-        try { result = (this[tool as ToolName] as (a: never) => ToolResult)(p.data as never); }
-        catch (e) { result = { ok: false, error: 'INTERNAL', message: (e as Error).message }; }
+        const p = SCHEMAS[tool as ToolName].safeParse(raw ?? {});
+        result = p.success
+          ? (this[tool as ToolName] as (a: never) => ToolResult).call(this, p.data as never)
+          : { ok: false, error: 'VALIDATION', issues: p.error.issues.map((i) => `${i.path.join('.') || 'input'}: ${i.message}`) };
       }
-    }
-    this.db.prepare('INSERT INTO audit(tool, ok, detail) VALUES (?,?,?)').run(tool, result.ok ? 1 : 0, result.ok ? '' : String(result.error));
+    } catch (e) { result = { ok: false, error: 'INTERNAL', message: (e as Error).message }; }
+    try { this.db.prepare('INSERT INTO audit(tool, ok, detail) VALUES (?,?,?)').run(tool.slice(0, 40), result.ok ? 1 : 0, result.ok ? '' : String(result.error)); } catch { /* audit must never break a call */ }
     return result;
   }
 

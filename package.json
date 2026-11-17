@@ -8,10 +8,12 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "eval": "tsx src/cli/run.ts",
-    "judge": "tsx src/cli/judge.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "server": "tsx server/index.ts",
+    "eval:sim": "tsx src/cli/run.ts",
+    "eval:llm": "tsx server/eval/cli.ts",
+    "eval": "tsx src/cli/run.ts"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1",

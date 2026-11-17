@@ -1,0 +1,22 @@
+# Render Blueprint for the API. Not deployed yet: requires a Render account action (see docs/DEPLOYMENT.md).
+services:
+  - type: web
+    name: voice-agent-quality-lab-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev
+    startCommand: npx tsx server/index.ts
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://rishi-creator-11.github.io
+      - key: PUBLIC_CHAT_ENABLED
+        value: "true"
+      - key: DAILY_BUDGET_USD
+        value: "2"
+      - key: DATA_DIR
+        value: /tmp/lab-data

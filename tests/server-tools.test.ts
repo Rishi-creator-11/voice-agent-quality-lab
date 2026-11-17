@@ -39,6 +39,11 @@ describe('backend tools (real SQLite)', () => {
     expect(be.execute('create_booking', { ...book, extra: 1 })).toMatchObject({ ok: false, error: 'VALIDATION' });
     expect(be.execute('drop_tables', {})).toMatchObject({ ok: false, error: 'UNKNOWN_TOOL' });
   });
+  it('never resolves prototype keys as tools and never throws', () => {
+    const { be } = mk();
+    for (const t of ['constructor', '__proto__', 'toString', 'hasOwnProperty', 'execute', 'tx'])
+      expect(be.execute(t, {})).toMatchObject({ ok: false, error: 'UNKNOWN_TOOL' });
+  });
   it('requires code + last name; wrong owner and unknown code look identical', () => {
     const { be, db } = mk();
     const wrong = be.execute('cancel_booking', { confirmation_code: 'BK-1002', last_name: 'Pike' });
