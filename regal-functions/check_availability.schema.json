@@ -1,0 +1,7 @@
+{
+  "name": "check_availability",
+  "description": "Checks a synthetic dental clinic schedule. Returns whether a date/time is open and the free 30-minute slots that day.",
+  "status": "NOT DEPLOYED - drafted from developer.regal.ai/docs/functions; never run in a Regal workspace",
+  "input": { "date": "string, YYYY-MM-DD (required)", "time": "string, HH:MM 24h (optional)" },
+  "output": { "ok": "boolean", "available": "boolean", "reason": "string: '', closed, outside_hours, taken, BAD_DATE", "freeSlots": "array of HH:MM strings" }
+}
