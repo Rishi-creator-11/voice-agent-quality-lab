@@ -189,7 +189,7 @@ a.feature:hover { border-color: var(--line-strong); box-shadow: var(--shadow); t
 .catbar .vals { font-size: 0.78rem; color: var(--ink-3); }
 
 /* scenarios master-detail */
-.md { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.md { min-height: calc(100dvh - var(--header) - 64px); display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
 .md-detail { min-width: 0; }
 .md-list { position: sticky; top: calc(var(--header) + 16px); display: grid; gap: 12px; max-height: calc(100dvh - var(--header) - 32px); }
 .md-items { overflow-y: auto; display: grid; gap: 6px; padding: 2px; margin: -2px; overscroll-behavior: contain; }
