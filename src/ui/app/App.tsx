@@ -1,71 +1,90 @@
 import { lazy, Suspense, useEffect, useRef } from 'react';
-import { Icon } from '../components/ui';
+import Home from '../views/Home';
 import Overview from '../views/Overview';
 import Scenarios from '../views/Scenarios';
 import { href, useRoute, type Section } from './router';
 import { RunProvider } from './RunContext';
+import { Skeleton } from '../components/ui';
 
-// Rarely-used or heavy views load on demand to keep the first paint small.
+// Heavier or rarely used views load on demand.
 const Playground = lazy(() => import('../views/Playground'));
-const Runner = lazy(() => import('../views/Runner'));
+const How = lazy(() => import('../views/How'));
 const Method = lazy(() => import('../views/Method'));
+const Runner = lazy(() => import('../views/Runner'));
 const History = lazy(() => import('../views/History'));
 
-const NAV: { section: Section; label: string; title: string; lead: string }[] = [
-  { section: 'overview', label: 'Overview', title: 'Results', lead: 'Two real LLM agents, one fictional dental clinic. Every number is computed from recorded conversations.' },
-  { section: 'scenarios', label: 'Scenarios', title: 'Scenarios', lead: 'Each scenario run against both agents. Open one for the checks, database changes and full transcript.' },
-  { section: 'live', label: 'Live agent', title: 'Live agent', lead: 'Talk to Agent A or B. The model chooses tools; backend code executes them against a sandbox database.' },
-  { section: 'run', label: 'Run evaluation', title: 'Run evaluation', lead: 'Operator tool: run scenarios against both agents on the server and load the recorded results.' },
-  { section: 'method', label: 'Agents & method', title: 'Agents and method', lead: 'What differs between A and B, how pass and fail are decided, and what this cannot tell you.' },
-  { section: 'history', label: 'Simulator (v1)', title: 'Historical simulator', lead: 'The first version used rule-based programs, not an LLM. Kept for reference only.' },
+const PAGES: Record<Section, { title: string; lead: string }> = {
+  home: { title: 'Voice Agent Quality Lab', lead: '' },
+  overview: { title: 'Evaluation overview', lead: '' },
+  scenarios: { title: 'Scenarios', lead: 'Browse every scenario, compare the two agents, and open the transcript, tool calls and final database state behind each result.' },
+  live: { title: 'Live Agent Playground', lead: 'Talk to the agent and inspect tool execution in real time.' },
+  how: { title: 'How it works', lead: 'From a caller’s words to an evaluated, inspectable result.' },
+  method: { title: 'Agents and method', lead: 'What differs between Agent A and Agent B, how pass and fail are decided, and what this cannot tell you.' },
+  run: { title: 'Run evaluation', lead: 'Operator tool: run scenarios on the server and load the recorded results.' },
+  history: { title: 'Historical simulator', lead: 'The first version used rule-based programs, not an LLM. Kept for reference only.' },
+};
+const MAIN_NAV: { section: Section; label: string }[] = [
+  { section: 'overview', label: 'Overview' }, { section: 'scenarios', label: 'Scenarios' }, { section: 'live', label: 'Live agent' }, { section: 'how', label: 'How it works' },
 ];
+const MORE_NAV: { section: Section; label: string }[] = [{ section: 'method', label: 'Method' }, { section: 'run', label: 'Run' }, { section: 'history', label: 'Simulator v1' }];
 
-export function App() {
-  return <RunProvider><Shell /></RunProvider>;
-}
+export function App() { return <RunProvider><Shell /></RunProvider>; }
 
 function Shell() {
   const [route] = useRoute();
-  const page = NAV.find((n) => n.section === route.section)!;
-  const heading = useRef<HTMLHeadingElement>(null);
+  const page = PAGES[route.section];
   const first = useRef(true);
 
   useEffect(() => {
-    document.title = `${route.param ? `${route.param} · ` : ''}${page.title} · Voice Agent Quality Lab`;
+    document.title = route.section === 'home' ? 'Voice Agent Quality Lab · Test, debug and improve AI voice agents' : `${route.param ? `${route.param} · ` : ''}${page.title} · Voice Agent Quality Lab`;
     if (first.current) { first.current = false; return; }
-    heading.current?.focus(); // move focus to the new page for keyboard and screen-reader users
     window.scrollTo(0, 0);
+    // Move focus to the page's main heading so keyboard and screen-reader users land on the new content.
+    (document.querySelector('main h1') as HTMLElement | null)?.focus();
   }, [route.section, route.param, page.title]);
 
+  const link = (n: { section: Section; label: string }) => (
+    <a key={n.section} href={href({ section: n.section })} aria-current={route.section === n.section ? 'page' : undefined}>{n.label}</a>
+  );
   return (
-    <div className="app">
+    <>
       <a className="skip" href="#content">Skip to content</a>
-      <aside className="side">
-        <div className="brand"><strong>Voice Agent Quality Lab</strong><span>LLM agent evaluation</span></div>
-        <nav className="nav" aria-label="Sections">
-          {NAV.map((n) => (
-            <a key={n.section} href={href({ section: n.section })} aria-current={route.section === n.section ? 'page' : undefined}><Icon name={n.section} />{n.label}</a>
-          ))}
-        </nav>
-        <div className="side-foot">
-          <span>Independent portfolio project. Not affiliated with, built on, or approved by Regal.</span>
-          <a href="https://github.com/Rishi-creator-11/voice-agent-quality-lab">Source on GitHub</a>
+      <header className="header">
+        <div className="wrap header-in" style={{ display: 'flex', alignItems: 'center', gap: 24, minHeight: 'var(--header)' }}>
+          <a className="logo" href={href({ section: 'home' })} aria-label="Voice Agent Quality Lab, home">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--ink)" /><path d="M8.5 16.5l4.5 4.5 10.5-11" fill="none" stroke="var(--bg)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            Voice Agent Quality Lab
+          </a>
+          <nav className="nav" aria-label="Primary">
+            {MAIN_NAV.map(link)}<span className="sep" aria-hidden="true" />{MORE_NAV.map(link)}
+          </nav>
+          <a className="btn header-cta hide-sm" href={href({ section: 'live' })}>Try live agent</a>
         </div>
-      </aside>
-      <main className="main" id="content">
-        <header className="page-head">
-          <h1 ref={heading} tabIndex={-1}>{page.title}</h1>
-          <p>{page.lead}</p>
-        </header>
-        <Suspense fallback={<p className="muted" role="status">Loading…</p>}>
-          {route.section === 'overview' && <Overview />}
-          {route.section === 'scenarios' && <Scenarios id={route.param} />}
-          {route.section === 'live' && <Playground />}
-          {route.section === 'run' && <Runner />}
-          {route.section === 'method' && <Method />}
-          {route.section === 'history' && <History />}
-        </Suspense>
+      </header>
+      <main id="content">
+        {route.section === 'home' ? <Home /> : (
+          <div className="wrap page">
+            {route.section !== 'overview' ? (
+              <header className="page-head"><h1 tabIndex={-1}>{page.title}</h1>{page.lead ? <p>{page.lead}</p> : null}</header>
+            ) : null}
+            <Suspense fallback={<Skeleton height={240} />}>
+              {route.section === 'overview' && <Overview />}
+              {route.section === 'scenarios' && <Scenarios id={route.param} />}
+              {route.section === 'live' && <Playground />}
+              {route.section === 'how' && <How />}
+              {route.section === 'method' && <Method />}
+              {route.section === 'run' && <Runner />}
+              {route.section === 'history' && <History />}
+            </Suspense>
+          </div>
+        )}
       </main>
-    </div>
+      <footer className="footer">
+        <div className="wrap">
+          <span>Independent portfolio project. Not affiliated with, built on, or approved by Regal. Synthetic data only.</span>
+          <span><a href="https://github.com/Rishi-creator-11/voice-agent-quality-lab">Source on GitHub</a></span>
+        </div>
+      </footer>
+    </>
   );
 }

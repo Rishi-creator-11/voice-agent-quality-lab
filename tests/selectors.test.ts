@@ -28,10 +28,10 @@ describe('dashboard selectors', () => {
 });
 
 describe('hash router', () => {
-  it('round-trips and falls back to overview', () => {
+  it('round-trips and falls back to home', () => {
     expect(parseHash('#/scenarios/emergency')).toEqual({ section: 'scenarios', param: 'emergency' });
-    expect(parseHash('')).toEqual({ section: 'overview' });
-    expect(parseHash('#/nope')).toEqual({ section: 'overview' });
+    expect(parseHash('')).toEqual({ section: 'home' });
+    expect(parseHash('#/nope')).toEqual({ section: 'home' });
     expect(href({ section: 'scenarios', param: 'a b' })).toBe('#/scenarios/a%20b');
     expect(parseHash(href({ section: 'scenarios', param: 'a b' })).param).toBe('a b');
   });
