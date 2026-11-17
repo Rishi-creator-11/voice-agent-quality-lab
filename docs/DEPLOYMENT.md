@@ -8,13 +8,15 @@ Backend: Node API (`server/`) that holds the model key and the databases. Intend
 - **Backend: not deployed.** Deploying needs a Render account action this environment does not have. Until it exists, the Live agent and Run evaluation tabs say "needs a backend" instead of showing anything fake.
 
 ## Steps to deploy the backend (about 5 minutes)
+The scripts below were tested locally against a production-mode server; they have not yet been run against Render.
 1. Create a **new** Anthropic API key for this app (do not reuse any key that has been pasted into chat or a terminal) and set a spend limit on it.
 2. In Render: New → Blueprint → select this repo (`render.yaml`). Set secrets:
    - `ANTHROPIC_API_KEY`: the new key
    - `ADMIN_TOKEN`: a long random string, e.g. `openssl rand -hex 32`
 3. Note the service URL, e.g. `https://voice-agent-quality-lab-api.onrender.com`. Check `/api/health` shows `llmConfigured: true`.
 4. Rebuild the frontend with the URL and publish: `VITE_API_URL=<service url> npm run build`, then push `dist/` to `gh-pages` (see README).
-5. Verify from a clean browser: Live agent tab converses and shows tool calls; `/api/admin/*` returns 401 without the token.
+5. Verify the API: `node scripts/verify-deploy.mjs <service url> --chat` (the `--chat` flag sends one message, about $0.001). Publish the frontend with `scripts/publish-pages.sh <service url>` instead of building by hand.
+6. Verify from a clean browser: Live agent tab converses and shows tool calls; `/api/admin/*` returns 401 without the token.
 
 Free Render instances sleep when idle (first request can take about a minute) and have no persistent disk: recorded runs on the server are lost on restart. The bundled `llm-results.json` is the durable copy.
 
