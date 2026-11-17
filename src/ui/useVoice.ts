@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { rankVoices, toSpeechChunks } from './speech';
 
 /** Browser voice I/O via the Web Speech API (recognition + synthesis). This app records and stores no audio. */
 interface RecEvent { results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }>; }
@@ -13,15 +14,39 @@ const ctor = (): RecCtor | undefined => {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition;
 };
 
+const KEY = 'val.voice.v1';
+interface Saved { voiceURI?: string; rate?: number }
+const load = (): Saved => { try { return JSON.parse(localStorage.getItem(KEY) ?? '{}') as Saved; } catch { return {}; } };
+const save = (s: Saved) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* storage unavailable */ } };
+export const clampRate = (r: number) => Math.min(1.3, Math.max(0.8, r));
+
 export function useVoice(onFinal: (text: string) => void) {
   const supported = !!ctor() && typeof speechSynthesis !== 'undefined';
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState('');
   const [speaking, setSpeaking] = useState(false);
   const [error, setError] = useState('');
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceURI, setVoiceURI] = useState<string | undefined>(() => load().voiceURI);
+  const [rate, setRateState] = useState<number>(() => clampRate(load().rate ?? 1));
   const rec = useRef<Rec | null>(null);
   const cb = useRef(onFinal);
+  const prefs = useRef({ voiceURI, rate, voices });
   cb.current = onFinal;
+  prefs.current = { voiceURI, rate, voices };
+
+  useEffect(() => {
+    if (typeof speechSynthesis === 'undefined') return;
+    const read = () => setVoices(rankVoices(speechSynthesis.getVoices()));
+    read();
+    speechSynthesis.addEventListener('voiceschanged', read);
+    return () => speechSynthesis.removeEventListener('voiceschanged', read);
+  }, []);
+
+  /** The chosen voice, or the best-ranked English voice installed on this device. */
+  const activeVoice = voices.find((v) => v.voiceURI === voiceURI) ?? voices[0];
+  const setVoice = (uri: string) => { setVoiceURI(uri); save({ voiceURI: uri, rate }); };
+  const setRate = (r: number) => { const c = clampRate(r); setRateState(c); save({ voiceURI, rate: c }); };
 
   const startListening = useCallback(() => {
     const C = ctor(); if (!C) return;
@@ -40,14 +65,25 @@ export function useVoice(onFinal: (text: string) => void) {
     try { r.start(); setListening(true); } catch { setError('Could not start the microphone.'); }
   }, []);
   const stopListening = useCallback(() => { rec.current?.abort(); setListening(false); setInterim(''); }, []);
+
+  /** Speaks sentence by sentence with the chosen voice. `then` runs after the last sentence. */
   const speak = useCallback((text: string, then?: () => void) => {
-    if (typeof speechSynthesis === 'undefined' || !text) return;
+    if (typeof speechSynthesis === 'undefined') return;
+    const chunks = toSpeechChunks(text); if (!chunks.length) return;
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text.replace(/[*_#`]/g, ''));
-    u.onstart = () => setSpeaking(true); u.onend = () => { setSpeaking(false); then?.(); }; u.onerror = () => setSpeaking(false);
-    speechSynthesis.speak(u);
+    const { voiceURI: uri, rate: r, voices: vs } = prefs.current;
+    const voice = vs.find((v) => v.voiceURI === uri) ?? vs[0];
+    chunks.forEach((c, i) => {
+      const u = new SpeechSynthesisUtterance(c);
+      if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = 'en-US';
+      u.rate = r; u.pitch = 1;
+      if (i === 0) u.onstart = () => setSpeaking(true);
+      if (i === chunks.length - 1) { u.onend = () => { setSpeaking(false); then?.(); }; }
+      u.onerror = (e) => { if ((e as SpeechSynthesisErrorEvent).error !== 'canceled' && (e as SpeechSynthesisErrorEvent).error !== 'interrupted') setSpeaking(false); };
+      speechSynthesis.speak(u);
+    });
   }, []);
   const stopSpeaking = useCallback(() => { speechSynthesis.cancel(); setSpeaking(false); }, []);
   useEffect(() => () => { if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel(); rec.current?.abort(); }, []);
-  return { supported, listening, interim, speaking, error, startListening, stopListening, speak, stopSpeaking };
+  return { supported, listening, interim, speaking, error, voices, activeVoice, rate, setVoice, setRate, startListening, stopListening, speak, stopSpeaking };
 }

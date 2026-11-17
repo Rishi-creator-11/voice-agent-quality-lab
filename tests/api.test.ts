@@ -87,6 +87,20 @@ describe('chat API', () => {
   });
 });
 
+describe('voice channel', () => {
+  const capture = () => { const seen: { system: string; maxTokens: number }[] = []; const client: LlmClient = { async complete(r) { seen.push({ system: r.system, maxTokens: r.maxTokens }); return { content: say('ok'), stopReason: 'end_turn', inputTokens: 10, outputTokens: 5, ms: 1 }; } }; return { seen, client }; };
+  it('adds the phone-call style and a lower token cap only for the voice channel, for both agents', async () => {
+    const { seen, client } = capture(); const a = make({}, client);
+    await chat(a, { agent: 'A', channel: 'voice', message: 'hi' }); await chat(a, { agent: 'B', channel: 'voice', message: 'hi' }); await chat(a, { agent: 'B', message: 'hi' });
+    expect(seen[0].system).toContain('Phone call style'); expect(seen[1].system).toContain('Phone call style'); expect(seen[2].system).not.toContain('Phone call style');
+    expect(seen[0].maxTokens).toBeLessThan(seen[2].maxTokens);
+  });
+  it('defaults to text and rejects unknown channels', async () => {
+    const a = make(); expect((await chat(a, { agent: 'A', message: 'hi' })).body.channel).toBe('text');
+    expect((await chat(a, { agent: 'A', channel: 'sms', message: 'hi' })).status).toBe(400);
+  });
+});
+
 describe('concurrency and budget reservation', () => {
   const slow = (ms: number): LlmClient => ({ async complete() { await new Promise((r) => setTimeout(r, ms)); return { content: say('ok'), stopReason: 'end_turn', inputTokens: 10, outputTokens: 5, ms }; } });
   it('allows only one in-flight turn per session', async () => {

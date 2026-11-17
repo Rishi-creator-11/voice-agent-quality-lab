@@ -1,6 +1,6 @@
 import { createClinicDb, handoffs, snapshot, type BookingRow, type Db } from './db';
 import { costUsd, type ContentBlock, type LlmClient, type Message } from './llm';
-import { PROMPTS, type AgentId } from './prompts';
+import { PROMPTS, VOICE_MAX_TOKENS, VOICE_STYLE, type AgentId } from './prompts';
 import { TOOL_DEFS } from './toolDefs';
 import { ClinicBackend, type ToolResult } from './tools';
 
@@ -19,7 +19,7 @@ export class Conversation {
   private createdCodes: string[] = [];
   usage: TurnUsage = { llmCalls: 0, inputTokens: 0, outputTokens: 0, llmMs: 0, costUsd: 0 };
   userTurns = 0;
-  constructor(readonly agent: AgentId, private client: LlmClient) {}
+  constructor(readonly agent: AgentId, private client: LlmClient, readonly channel: 'text' | 'voice' = 'text') {}
 
   /** Session note given to Agent B only (system-maintained state). */
   private stateNote(): string {
@@ -36,10 +36,11 @@ export class Conversation {
       u.costUsd = costUsd(u.inputTokens, u.outputTokens); this.usage.costUsd += u.costUsd;
       return { toolCalls, usage: u, totalMs: performance.now() - t0, ...r };
     };
-    const system = PROMPTS[this.agent] + (this.agent === 'B' ? this.stateNote() : '');
+    const system = PROMPTS[this.agent] + (this.agent === 'B' ? this.stateNote() : '') + (this.channel === 'voice' ? VOICE_STYLE : '');
+    const maxTokens = this.channel === 'voice' ? VOICE_MAX_TOKENS : MAX_TOKENS;
     for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
       let res;
-      try { res = await this.client.complete({ system, messages: this.messages, tools: TOOL_DEFS, maxTokens: MAX_TOKENS }); }
+      try { res = await this.client.complete({ system, messages: this.messages, tools: TOOL_DEFS, maxTokens }); }
       catch (e) { this.messages.pop(); return finish({ reply: '', error: (e as Error).message }); }
       u.llmCalls++; u.inputTokens += res.inputTokens; u.outputTokens += res.outputTokens; u.llmMs += res.ms;
       this.messages.push({ role: 'assistant', content: res.content });

@@ -50,15 +50,16 @@ function Session({ health }: { health: Health }) {
   const [busy, setBusy] = useState(false);
   const [speakReplies, setSpeakReplies] = useState(true);
   const [handsFree, setHandsFree] = useState(false);
+  const [phoneStyle, setPhoneStyle] = useState(true);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const sessionRef = useRef<string | undefined>(undefined);
   const busyRef = useRef(false);
   const idRef = useRef(0);
-  const settings = useRef({ speakReplies, handsFree, agent });
+  const settings = useRef({ speakReplies, handsFree, agent, phoneStyle });
   const voiceRef = useRef<ReturnType<typeof useVoice> | null>(null);
   sessionRef.current = session;
-  settings.current = { speakReplies, handsFree, agent };
+  settings.current = { speakReplies, handsFree, agent, phoneStyle };
   useEffect(() => { endRef.current?.scrollIntoView({ block: 'nearest' }); }, [msgs, busy]);
 
   const log = useCallback((t: string) => setEvents((e) => [...e, { id: ++idRef.current, at: Date.now(), text: t }]), []);
@@ -71,7 +72,7 @@ function Session({ health }: { health: Health }) {
     if (!sessionRef.current) log(`Session started with Agent ${settings.current.agent}`);
     log('Caller message sent');
     try {
-      const r = await postChat(settings.current.agent, message, sessionRef.current);
+      const r = await postChat(settings.current.agent, message, sessionRef.current, settings.current.phoneStyle ? 'voice' : 'text');
       const at = Date.now();
       setSession(r.sessionId); setBookings(r.bookings); setHandoffs(r.handoffs); setRemaining(r.remainingTurns);
       setTools((t) => [...t, ...r.toolCalls.map((c) => ({ id: ++idRef.current, name: c.name, ok: c.result.ok, at, ms: c.ms, input: c.input, result: c.result }))]);
@@ -140,7 +141,25 @@ function Session({ health }: { health: Health }) {
               {voice.speaking ? <button className="btn secondary small" onClick={voice.stopSpeaking}>Interrupt agent</button> : null}
               <label className="check"><input type="checkbox" checked={speakReplies} onChange={(e) => setSpeakReplies(e.target.checked)} disabled={!voice.supported} />Speak replies</label>
               <label className="check"><input type="checkbox" checked={handsFree} onChange={(e) => setHandsFree(e.target.checked)} disabled={!voice.supported} />Hands-free</label>
+              <label className="check" title="Shorter replies written to be spoken. Applies to both agents. The recorded evaluation used normal text replies."><input type="checkbox" checked={phoneStyle} onChange={(e) => setPhoneStyle(e.target.checked)} disabled={started} />Phone-call style replies</label>
             </div>
+            {voice.supported ? (
+              <details>
+                <summary>Voice settings</summary>
+                <div className="stack" style={{ paddingTop: 10 }}>
+                  <label className="field">Voice
+                    <select value={voice.activeVoice?.voiceURI ?? ''} onChange={(e) => voice.setVoice(e.target.value)} disabled={voice.voices.length === 0}>
+                      {voice.voices.length === 0 ? <option value="">No English voices found</option> : voice.voices.map((v) => <option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang}){v.localService ? '' : ' · online'}</option>)}
+                    </select>
+                  </label>
+                  <label className="field">Speed {voice.rate.toFixed(2)}×
+                    <input type="range" min="0.8" max="1.3" step="0.05" value={voice.rate} onChange={(e) => voice.setRate(Number(e.target.value))} />
+                  </label>
+                  <div className="cluster"><button type="button" className="btn secondary small" onClick={() => voice.speak('Thanks for calling Maple Grove Family Dental. Your confirmation code is BK-1006, and your cleaning is Friday at 2:00 PM, for 120 dollars.')}>Test voice</button>
+                    <span className="muted tiny">The best-sounding English voice on this device is chosen by default. Premium or online voices sound far more natural than the basic ones.</span></div>
+                </div>
+              </details>
+            ) : null}
             {!voice.supported ? <p className="muted tiny">Voice needs a browser with speech recognition and synthesis (Chrome, Edge or Safari). Typing works everywhere.</p>
               : <p className="muted tiny">Voice uses your browser’s speech services; in Chrome, recognition audio is processed by Google. This app records and stores no audio. Not yet verified end to end with a microphone.</p>}
             {voice.error ? <p className="small" style={{ color: 'var(--fail)' }} role="alert">{voice.error}</p> : null}

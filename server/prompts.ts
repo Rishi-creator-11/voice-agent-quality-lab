@@ -53,6 +53,16 @@ ${KNOWLEDGE}
 - Call transfer_to_human when the caller asks for a person, the front desk, a manager, or you cannot help.
 - When the caller says they are done, say goodbye briefly.`;
 
+/** Appended for phone-style conversations (both agents equally). Not part of the recorded text evaluation. */
+export const VOICE_STYLE = `
+
+# Phone call style
+This is a live phone call and your words will be spoken aloud by a text-to-speech voice.
+- Reply in one to three short sentences. Ask only one question at a time.
+- No lists, markdown, bullet points, symbols or emoji.
+- Speak numbers and times the way a person would ("two PM on Friday"), and read back a confirmation code slowly, one character at a time.
+- Sound warm and natural, not like a script.`;
+export const VOICE_MAX_TOKENS = 220;
 export const PROMPTS = { A: PROMPT_A, B: PROMPT_B } as const;
 export type AgentId = 'A' | 'B';
 

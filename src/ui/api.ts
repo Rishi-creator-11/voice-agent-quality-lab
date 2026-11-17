@@ -24,7 +24,7 @@ export interface ChatResponse {
   bookings: { code: string; name: string; service: string; date: string; time: string; status: string }[]; handoffs: string[];
   usage: { llmCalls: number; inputTokens: number; outputTokens: number; costUsd: number }; totalMs: number; remainingTurns: number;
 }
-export const postChat = (agent: 'A' | 'B', message: string, sessionId?: string) => call<ChatResponse>('/api/chat', { method: 'POST', body: JSON.stringify({ agent, message, sessionId }) });
+export const postChat = (agent: 'A' | 'B', message: string, sessionId?: string, channel: 'text' | 'voice' = 'text') => call<ChatResponse>('/api/chat', { method: 'POST', body: JSON.stringify({ agent, message, sessionId, channel }) });
 export const endSession = (sessionId: string) => call('/api/session/end', { method: 'POST', body: JSON.stringify({ sessionId }) }).catch(() => undefined);
 export const getScenarios = () => call<{ model: string; scenarios: { id: string; title: string; category: string }[] }>('/api/agents');
 export const startEval = (token: string, body: object) => call<{ jobId: string; total: number }>('/api/admin/eval', { method: 'POST', body: JSON.stringify(body), token });

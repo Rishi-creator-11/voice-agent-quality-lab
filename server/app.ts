@@ -51,7 +51,7 @@ export function createApp(d: Deps) {
     dailyBudgetReached: spendUsd >= cfg.dailyBudgetUsd, adminConfigured: !!cfg.adminToken,
   }); });
 
-  const chatBody = z.object({ sessionId: z.string().uuid().optional(), agent: z.enum(['A', 'B']), message: z.string().trim().min(1).max(cfg.maxMessageChars) }).strict();
+  const chatBody = z.object({ sessionId: z.string().uuid().optional(), agent: z.enum(['A', 'B']), channel: z.enum(['text', 'voice']).default('text'), message: z.string().trim().min(1).max(cfg.maxMessageChars) }).strict();
   app.post('/api/chat', ipLimit, async (req, res) => {
     rollDay(); sweep();
     if (!d.llmConfigured) return void res.status(503).json({ error: 'LLM_NOT_CONFIGURED', message: 'No model API key is configured on the server.' });
@@ -64,7 +64,7 @@ export function createApp(d: Deps) {
     if (s && s.conv.agent !== p.data.agent) return void res.status(400).json({ error: 'AGENT_MISMATCH', message: 'Start a new conversation to switch agents.' });
     if (!s) {
       if (sessions.size >= cfg.maxSessions) return void res.status(503).json({ error: 'AT_CAPACITY', message: 'Too many active conversations. Try again in a few minutes.' });
-      s = { conv: new Conversation(p.data.agent, client), lastUsed: now(), ipHash: hash(req.ip ?? ''), busy: false };
+      s = { conv: new Conversation(p.data.agent, client, p.data.channel), lastUsed: now(), ipHash: hash(req.ip ?? ''), busy: false };
     }
     if (s.busy) return void res.status(409).json({ error: 'TURN_IN_PROGRESS', message: 'Wait for the previous reply before sending another message.' });
     if (inflight >= cfg.maxConcurrentChats) return void res.status(503).json({ error: 'AT_CAPACITY', message: 'The demo is busy. Try again in a moment.' });
@@ -80,7 +80,7 @@ export function createApp(d: Deps) {
     spendUsd += r.usage.costUsd;
     // Upstream error details are not forwarded to the browser.
     if (r.error) return void res.status(502).json({ error: 'UPSTREAM_ERROR', sessionId: id, message: 'The model service failed for this message. Please try again.' });
-    res.json({ sessionId: id, agent: s.conv.agent, reply: r.reply, toolCalls: r.toolCalls, bookings: s.conv.bookings().map((b) => ({ code: b.code, name: b.full_name, service: b.service, date: b.date, time: b.time, status: b.status })), handoffs: s.conv.handoffs(), usage: r.usage, totalMs: r.totalMs, remainingTurns: cfg.maxTurnsPerSession - s.conv.userTurns });
+    res.json({ sessionId: id, agent: s.conv.agent, channel: s.conv.channel, reply: r.reply, toolCalls: r.toolCalls, bookings: s.conv.bookings().map((b) => ({ code: b.code, name: b.full_name, service: b.service, date: b.date, time: b.time, status: b.status })), handoffs: s.conv.handoffs(), usage: r.usage, totalMs: r.totalMs, remainingTurns: cfg.maxTurnsPerSession - s.conv.userTurns });
   });
 
   app.post('/api/session/end', ipLimit, (req, res) => { const id = z.string().uuid().safeParse(req.body?.sessionId); if (id.success) sessions.delete(id.data); res.json({ ok: true }); });
